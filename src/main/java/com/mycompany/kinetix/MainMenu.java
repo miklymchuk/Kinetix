@@ -1,18 +1,18 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
- */
 package com.mycompany.kinetix;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.stage.Stage;
+
 /**
- * FXML Controller class
+ * FXML Main Menu controller class
  *
  * @author 2540408
  */
@@ -28,11 +28,18 @@ public class MainMenu implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        startBtn.setOnAction(event -> {});
-        
-        exitBtn.setOnAction(event-> {
-            Platform.exit();
-        });
+        startBtn.setOnAction(event -> switchScene("Game.fxml"));
+        exitBtn.setOnAction(event-> Platform.exit());
     }    
     
+    private void switchScene(String fxml) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxml));
+            Stage stage = (Stage) startBtn.getScene().getWindow();
+            stage.setScene(new Scene(loader.load()));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
