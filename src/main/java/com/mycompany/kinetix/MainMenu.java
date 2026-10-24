@@ -32,6 +32,10 @@ public class MainMenu implements Initializable {
         exitBtn.setOnAction(event-> Platform.exit());
     }    
     
+    /**
+     * switches the scene of the stage
+     * @param fxml the fxml file
+     */
     private void switchScene(String fxml) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxml));
