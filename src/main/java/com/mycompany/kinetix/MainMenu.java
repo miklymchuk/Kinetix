@@ -28,7 +28,7 @@ public class MainMenu implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        startBtn.setOnAction(event -> switchScene("Game.fxml"));
+        startBtn.setOnAction(event -> switchScene("selectpage.fxml"));
         exitBtn.setOnAction(event-> Platform.exit());
     }    
     

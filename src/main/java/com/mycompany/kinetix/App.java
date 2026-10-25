@@ -17,7 +17,7 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        scene = new Scene(loadFXML("GameMenu"), 1920, 1080);
+        scene = new Scene(loadFXML("MainMenu"), 1920, 1080);
         stage.setTitle("Kinetix");
         stage.setScene(scene);
         stage.show();
