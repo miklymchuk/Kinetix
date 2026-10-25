@@ -46,15 +46,19 @@ public class SelectPageController {
     }
     
     @FXML
-    void returnButtonPressed(ActionEvent event) {
+    public void returnButtonPressed(ActionEvent event) {
         switchScene("MainMenu.fxml");
+    }
+    
+    public Button getReturnButton() {
+        return returnButton;
     }
     
     /**
      * switches the scene of the stage
      * @param fxml the FXML file
      */
-    private void switchScene(String fxml) {
+    public void switchScene(String fxml) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxml));
             Stage stage = (Stage) returnButton.getScene().getWindow();
@@ -64,5 +68,4 @@ public class SelectPageController {
             e.printStackTrace();
         }
     }
-
 }

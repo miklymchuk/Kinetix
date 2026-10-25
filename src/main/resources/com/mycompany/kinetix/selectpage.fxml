@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.kinetix.SelectPageController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="780.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.kinetix.SelectPageController">
    <top>
       <Label alignment="CENTER" text="Select a Unit" BorderPane.alignment="CENTER">
          <font>
@@ -21,12 +21,12 @@
          <children>
             <HBox alignment="CENTER" prefWidth="200.0" spacing="300.0">
                <children>
-                  <Button minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#linearMotionButtonPressed" prefHeight="113.0" prefWidth="530.0" text="1D Kinematics" textAlignment="CENTER">
+                  <Button fx:id="straightLineMotionButton" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#linearMotionButtonPressed" prefHeight="113.0" prefWidth="530.0" text="1D Kinematics" textAlignment="CENTER">
                      <font>
                         <Font size="58.0" />
                      </font>
                   </Button>
-                  <Button layoutX="10.0" layoutY="10.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#projectileMotionButtonPressed" prefHeight="113.0" prefWidth="530.0" text="2D Kinematics" textAlignment="CENTER">
+                  <Button fx:id="projectileMotionButton" layoutX="10.0" layoutY="10.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#projectileMotionButtonPressed" prefHeight="113.0" prefWidth="530.0" text="2D Kinematics" textAlignment="CENTER">
                      <font>
                         <Font size="58.0" />
                      </font>
@@ -35,12 +35,12 @@
             </HBox>
             <HBox alignment="CENTER" prefWidth="200.0" spacing="300.0">
                <children>
-                  <Button minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#rotDynamicsButtonPressed" prefHeight="113.0" prefWidth="530.0" text="Rotational Dynamics" textAlignment="CENTER">
+                  <Button fx:id="rotDynamicsButton" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#rotDynamicsButtonPressed" prefHeight="113.0" prefWidth="530.0" text="Rotational Dynamics" textAlignment="CENTER">
                      <font>
                         <Font size="51.0" />
                      </font>
                   </Button>
-                  <Button layoutX="10.0" layoutY="10.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#linMomentumButtonPressed" prefHeight="113.0" prefWidth="530.0" text="Linear Momentum" textAlignment="CENTER">
+                  <Button fx:id="linMomentumButton" layoutX="10.0" layoutY="10.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#linMomentumButtonPressed" prefHeight="113.0" prefWidth="530.0" text="Linear Momentum" textAlignment="CENTER">
                      <font>
                         <Font size="55.0" />
                      </font>
@@ -54,7 +54,7 @@
       </VBox>
    </center>
    <bottom>
-      <Button minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#returnButtonPressed" prefHeight="84.0" prefWidth="254.0" text="Return" textAlignment="CENTER" BorderPane.alignment="CENTER">
+      <Button fx:id="returnButton" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#returnButtonPressed" prefHeight="84.0" prefWidth="254.0" text="Return" textAlignment="CENTER" BorderPane.alignment="CENTER">
          <BorderPane.margin>
             <Insets bottom="30.0" />
          </BorderPane.margin>
