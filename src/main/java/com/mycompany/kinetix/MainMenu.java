@@ -17,8 +17,7 @@ import javafx.stage.Stage;
  * @author 2540408
  */
 public class MainMenu implements Initializable {
-
-
+    
     @FXML
     private Button startBtn;
     @FXML
