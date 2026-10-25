@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.kinetix.MainMenu">
+   <center>
+      <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="40.0" BorderPane.alignment="CENTER">
+         <children>
+            <Button fx:id="startBtn" mnemonicParsing="false" prefHeight="100.0" prefWidth="700.0" text="Start" textFill="#4ca855">
+               <font>
+                  <Font name="Calibri" size="60.0" />
+               </font>
+            </Button>
+            <Button fx:id="exitBtn" alignment="CENTER" mnemonicParsing="false" prefHeight="100.0" prefWidth="700.0" text="Exit" textFill="#d71f1f">
+               <font>
+                  <Font name="Calibri" size="60.0" />
+               </font>
+            </Button>
+         </children>
+         <padding>
+            <Insets bottom="70.0" left="70.0" right="70.0" top="70.0" />
+         </padding>
+         <effect>
+            <DropShadow>
+               <color>
+                  <Color red="0.4736842215061188" />
+               </color>
+            </DropShadow>
+         </effect>
+      </VBox>
+   </center>
+</BorderPane>
