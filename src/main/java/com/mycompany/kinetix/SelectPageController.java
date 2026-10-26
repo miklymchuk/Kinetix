@@ -32,7 +32,7 @@ public class SelectPageController {
 
     @FXML
     void linearMotionButtonPressed(ActionEvent event) {
-
+        switchScene("linearMotionSelection.fxml");
     }
 
     @FXML
