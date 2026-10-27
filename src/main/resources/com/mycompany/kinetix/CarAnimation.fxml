@@ -2,14 +2,58 @@
 
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.paint.LinearGradient?>
+<?import javafx.scene.paint.Stop?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.shape.Polygon?>
 <?import javafx.scene.shape.Rectangle?>
-
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="780.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1">
    <bottom>
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#a9b3bc" height="53.0" stroke="BLACK" strokeType="INSIDE" width="1341.0" BorderPane.alignment="CENTER_LEFT" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#a9b3bc" height="53.0" stroke="BLACK" strokeType="INSIDE" width="1925.0" BorderPane.alignment="CENTER_LEFT" />
    </bottom>
    <left>
-      <Pane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+      <Pane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+            <Pane layoutX="5.0" layoutY="294.0" prefHeight="200.0" prefWidth="200.0" />
+            <Polygon fx:id="carBody" fill="DODGERBLUE" layoutX="122.0" layoutY="610.0" points="-95.0, 116.66668701171875, 87.0, 116.66668701171875, 66.0, 82.33331298828125, 26.0, 82.33331298828125, 4.666664123535156, 51.66668701171875, -32.666664123535156, 51.66668701171875, -50.0, 82.33331298828125, -95.0, 72.66668701171875" stroke="BLACK" strokeType="INSIDE" />
+            <Circle fx:id="wheel1" layoutX="65.0" layoutY="728.0" radius="17.0" stroke="BLACK" strokeType="INSIDE">
+               <fill>
+                  <LinearGradient endX="1.0" endY="1.0">
+                     <stops>
+                        <Stop>
+                           <color>
+                              <Color red="0.4038742780685425" green="0.46033748984336853" blue="0.5131579041481018" />
+                           </color>
+                        </Stop>
+                        <Stop offset="1.0">
+                           <color>
+                              <Color red="1.0" green="1.0" blue="1.0" />
+                           </color>
+                        </Stop>
+                     </stops>
+                  </LinearGradient>
+               </fill>
+            </Circle>
+            <Circle fx:id="wheel2" layoutX="159.0" layoutY="727.0" radius="17.0" stroke="BLACK" strokeType="INSIDE">
+               <fill>
+                  <LinearGradient endX="1.0" endY="1.0">
+                     <stops>
+                        <Stop>
+                           <color>
+                              <Color red="0.4038742780685425" green="0.46033748984336853" blue="0.5131579041481018" />
+                           </color>
+                        </Stop>
+                        <Stop offset="1.0">
+                           <color>
+                              <Color red="1.0" green="1.0" blue="1.0" />
+                           </color>
+                        </Stop>
+                     </stops>
+                  </LinearGradient>
+               </fill>
+            </Circle>
+         </children></Pane>
    </left>
 </BorderPane>
