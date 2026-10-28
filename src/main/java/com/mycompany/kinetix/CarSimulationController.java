@@ -1,19 +1,23 @@
 package com.mycompany.kinetix;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-import javafx.animation.Interpolator;
+import javafx.animation.Animation;
 import javafx.animation.ParallelTransition;
 import javafx.animation.RotateTransition;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Polygon;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class CarSimulationController implements Initializable {
@@ -32,6 +36,8 @@ public class CarSimulationController implements Initializable {
 
     @FXML
     private Button resetBtn;
+    
+    @FXML Button returnBtn;
 
     @FXML
     private Slider accelerationSlider;
@@ -44,17 +50,42 @@ public class CarSimulationController implements Initializable {
 
     @FXML
     void pauseBtnPressed(ActionEvent event) {
-        accelerationSlider.setDisable(false);
+        if (movingCar != null) {
+            movingCar.pause();
+        }
     }
 
     @FXML
     void playBtnPressed(ActionEvent event) {
+        if (movingCar != null && movingCar.getStatus() == Animation.Status.RUNNING) {
+            return;
+        }
+
+        if (movingCar != null && movingCar.getStatus() == Animation.Status.PAUSED) {
+            movingCar.play();
+            return;
+        }
+
         carMovement();
     }
 
     @FXML
     void resetBtnPressed(ActionEvent event) {
+        if (movingCar != null) {
+            movingCar.stop();
+        }
 
+        carBody.setTranslateX(0);
+        wheel1.setTranslateX(0);
+        wheel2.setTranslateX(0);
+        wheel1.setRotate(0);
+        wheel2.setRotate(0);
+        accelerationSlider.setDisable(false);
+    }
+    
+    @FXML
+    void returnBtnPressed(ActionEvent event) {
+        switchScene("linearMotionSelection.fxml");
     }
 
     private TranslateTransition movingCarBody = new TranslateTransition();
@@ -62,8 +93,9 @@ public class CarSimulationController implements Initializable {
     private TranslateTransition movingWheel2 = new TranslateTransition();
     private RotateTransition rotatingWheel1 = new RotateTransition();
     private RotateTransition rotatingWheel2 = new RotateTransition();
-    private ParallelTransition movingCar = new ParallelTransition(movingCarBody, movingWheel1, movingWheel2, rotatingWheel1, rotatingWheel2);
-    private double duration;
+    private ParallelTransition movingCar;
+    private double distance = 1900;
+    private static final double PIXELS_PER_METER = 5;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -73,11 +105,13 @@ public class CarSimulationController implements Initializable {
         rotatingWheel1.setNode(wheel1);
         rotatingWheel2.setNode(wheel2);
 
-        movingCarBody.setInterpolator(Interpolator.LINEAR);
-        movingWheel1.setInterpolator(Interpolator.LINEAR);
-        movingWheel2.setInterpolator(Interpolator.LINEAR);
-        rotatingWheel1.setInterpolator(Interpolator.LINEAR);
-        rotatingWheel2.setInterpolator(Interpolator.LINEAR);
+        movingCarBody.setInterpolator(MechanicsUtility.accelerationInterpolator);
+        movingWheel1.setInterpolator(MechanicsUtility.accelerationInterpolator);
+        movingWheel2.setInterpolator(MechanicsUtility.accelerationInterpolator);
+        rotatingWheel1.setInterpolator(MechanicsUtility.accelerationInterpolator);
+        rotatingWheel2.setInterpolator(MechanicsUtility.accelerationInterpolator);
+        
+        accelerationSliderLabel.textProperty().bind(accelerationSlider.valueProperty().asString("%.1f m/s²"));
     }
 
     public void carMovement() {
@@ -86,11 +120,55 @@ public class CarSimulationController implements Initializable {
             return;
         }
 
-        double startX = carBody.getTranslateX();
-        double endX = 1800;
-        movingCarBody.setDuration(Duration.seconds(duration));
-        movingCarBody.setFromX(startX);
-        movingCarBody.setToX(endX);
-        movingCarBody.play();
+        if (movingCar != null) {
+            movingCar.stop();
+        }
+
+        double distanceInMeters = distance / PIXELS_PER_METER;
+        double seconds = MechanicsUtility.time(distanceInMeters, acceleration);
+        Duration time = Duration.seconds(seconds);
+
+        double startBodyX = carBody.getTranslateX();
+        movingCarBody.setDuration(time);
+        movingCarBody.setFromX(startBodyX);
+        movingCarBody.setToX(startBodyX + distance);
+
+        double startWheel1X = wheel1.getTranslateX();
+        movingWheel1.setDuration(time);
+        movingWheel1.setFromX(startWheel1X);
+        movingWheel1.setToX(startWheel1X + distance);
+
+        double startWheel2X = wheel2.getTranslateX();
+        movingWheel2.setDuration(time);
+        movingWheel2.setFromX(startWheel2X);
+        movingWheel2.setToX(startWheel2X + distance);
+
+        double degrees = Math.toDegrees(distance / wheel1.getRadius());
+        rotatingWheel1.setDuration(time);
+        rotatingWheel1.setFromAngle(wheel1.getRotate());
+        rotatingWheel1.setByAngle(degrees);
+        rotatingWheel2.setDuration(time);
+        rotatingWheel2.setFromAngle(wheel2.getRotate());
+        rotatingWheel2.setByAngle(degrees);
+
+        movingCar = new ParallelTransition(movingCarBody, movingWheel1, movingWheel2, rotatingWheel1, rotatingWheel2);
+        accelerationSlider.setDisable(true);
+        movingCar.play();
+        movingCar.setOnFinished(event -> accelerationSlider.setDisable(false));
+    }
+    
+    /**
+     * switches the scene of the stage
+     * @param fxml the fxml file
+     */
+    public void switchScene(String fxml) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxml));
+            Stage stage = (Stage) returnBtn.getScene().getWindow();
+            stage.setScene(new Scene(loader.load()));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

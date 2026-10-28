@@ -44,7 +44,7 @@ public class LinearMotionSelectionController implements Initializable {
         switchScene("CarAnimation.fxml");
     }
 
-
+    @FXML
     void freeFallButtonPressed(ActionEvent event) {
         switchScene("freeFall.fxml");
     }
@@ -53,7 +53,7 @@ public class LinearMotionSelectionController implements Initializable {
      * switches the scene of the stage
      * @param fxml the fxml file
      */
-    private void switchScene(String fxml) {
+    public void switchScene(String fxml) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxml));
             Stage stage = (Stage) returnBtn.getScene().getWindow();
