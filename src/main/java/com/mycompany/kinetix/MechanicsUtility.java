@@ -1,4 +1,5 @@
 package com.mycompany.kinetix;
+import java.lang.Math;
 
 /**
  *
@@ -26,6 +27,11 @@ public class MechanicsUtility {
      */
     public static double finalPosition(double x, double v, double a, double t) {
         return x + v * t + 0.5 * a * Math.pow(t, 2);
+    }
+    
+    public static double time(double x, double a) {
+        double t = Math.sqrt(2 * x / a);
+        return t;
     }
     
     /**

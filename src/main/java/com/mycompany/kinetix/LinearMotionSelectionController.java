@@ -44,6 +44,11 @@ public class LinearMotionSelectionController implements Initializable {
         switchScene("selectpage.fxml");
     }
     
+    @FXML
+    void freeFallButtonPressed(ActionEvent event) {
+        switchScene("freeFall.fxml");
+    }
+    
     /**
      * switches the scene of the stage
      * @param fxml the fxml file

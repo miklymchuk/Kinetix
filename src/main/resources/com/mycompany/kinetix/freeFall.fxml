@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="780.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.kinetix.FreeFallController">
+   <right>
+      <VBox fx:id="fieldsBox" alignment="CENTER" prefHeight="200.0" prefWidth="400.0" spacing="25.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label fx:id="heightLbl" alignment="CENTER" prefHeight="141.0" prefWidth="405.0" text="Height:">
+               <font>
+                  <Font size="64.0" />
+               </font>
+            </Label>
+            <HBox fx:id="heightSliderHBox" prefHeight="100.0" prefWidth="200.0" spacing="5.0">
+               <children>
+                  <Slider fx:id="heightSlider" max="50.0" maxWidth="300.0" prefWidth="300.0" showTickLabels="true" showTickMarks="true" />
+                  <TextField fx:id="heightValue" prefHeight="25.0" prefWidth="50.0" />
+               </children>
+            </HBox>
+            <VBox fx:id="gravityVBox" alignment="CENTER" prefHeight="60.0" prefWidth="400.0">
+               <children>
+                  <Label fx:id="gravityLbl" text="Choose the gravity of:">
+                     <font>
+                        <Font size="36.0" />
+                     </font>
+                  </Label>
+                  <RadioButton fx:id="earthRadioBtn" mnemonicParsing="false" text="Earth">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                     <toggleGroup>
+                        <ToggleGroup fx:id="gravityButtons" />
+                     </toggleGroup>
+                  </RadioButton>
+                  <RadioButton fx:id="moonRadioBtn" mnemonicParsing="false" text="The Moon" toggleGroup="$gravityButtons">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </RadioButton>
+                  <RadioButton fx:id="marsRadioBtn" mnemonicParsing="false" text="Mars" toggleGroup="$gravityButtons">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </RadioButton>
+               </children>
+            </VBox>
+            <Button fx:id="startBtn" mnemonicParsing="false" onAction="#startButtonPressed" prefHeight="75.0" prefWidth="160.0" text="Start">
+               <font>
+                  <Font size="36.0" />
+               </font>
+            </Button>
+            <Button fx:id="resetBtn" layoutX="80.0" layoutY="588.0" mnemonicParsing="false" prefHeight="75.0" prefWidth="160.0" text="Reset">
+               <font>
+                  <Font size="36.0" />
+               </font>
+            </Button>
+            <Button fx:id="exitBtn" layoutX="80.0" layoutY="664.0" mnemonicParsing="false" onAction="#exitButtonPressed" prefHeight="75.0" prefWidth="160.0" text="Exit">
+               <font>
+                  <Font size="36.0" />
+               </font>
+            </Button>
+         </children>
+      </VBox>
+   </right>
+   <top>
+      <HBox fx:id="infoBox" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="100.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label fx:id="heightInfo" text="Height: 0m">
+               <font>
+                  <Font size="64.0" />
+               </font>
+            </Label>
+            <Label fx:id="velocityInfo" layoutX="10.0" layoutY="10.0" text="Velocity: 0m">
+               <font>
+                  <Font size="64.0" />
+               </font>
+            </Label>
+            <Label fx:id="accelerationInfo" layoutX="251.0" layoutY="10.0" text="Acceleration: 0m">
+               <font>
+                  <Font size="64.0" />
+               </font>
+            </Label>
+         </children>
+      </HBox>
+   </top>
+   <center>
+      <Pane fx:id="simulationPane" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+            <Circle fx:id="freeFallObject" centerX="760.0" centerY="630.0" radius="50.0" stroke="BLACK" strokeType="INSIDE" />
+         </children>
+      </Pane>
+   </center>
+</BorderPane>
