@@ -8,7 +8,7 @@ import javafx.animation.Interpolator;
  */
 public class MechanicsUtility {
     public static final double GRAVITY_CONSTANT = 9.81;
-    public static Interpolator accelerationInterpolator = new Interpolator() {
+    public static Interpolator accelerationInterpolator = new Interpolator() { //Custom interpolator
         @Override
         protected double curve(double t) {
             return t * t;
