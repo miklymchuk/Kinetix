@@ -2,6 +2,7 @@ package com.mycompany.kinetix;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.animation.Animation;
 import javafx.animation.Interpolator;
 import javafx.animation.ParallelTransition;
 import javafx.animation.RotateTransition;
@@ -44,17 +45,32 @@ public class CarSimulationController implements Initializable {
 
     @FXML
     void pauseBtnPressed(ActionEvent event) {
-        
+        if (movingCar != null) {
+            movingCar.pause();
+        }
     }
 
     @FXML
     void playBtnPressed(ActionEvent event) {
+        if (movingCar != null && movingCar.getStatus() == Animation.Status.PAUSED) {
+            movingCar.play();
+            return;
+        }
+        
         carMovement();
-        accelerationSlider.setDisable(true);
     }
 
     @FXML
     void resetBtnPressed(ActionEvent event) {
+        if (movingCar != null) {
+            movingCar.stop();
+        }
+        
+        carBody.setTranslateX(0);
+        wheel1.setTranslateX(0);
+        wheel2.setTranslateX(0);
+        wheel1.setRotate(0);
+        wheel2.setRotate(0);
         accelerationSlider.setDisable(false);
     }
 
@@ -66,6 +82,7 @@ public class CarSimulationController implements Initializable {
     private ParallelTransition movingCar = new ParallelTransition(movingCarBody, movingWheel1, movingWheel2, rotatingWheel1, rotatingWheel2);
     private double duration;
     private double distance = 1500;
+    private static final double PIXELS_PER_METER = 5;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -74,12 +91,6 @@ public class CarSimulationController implements Initializable {
         movingWheel2.setNode(wheel2);
         rotatingWheel1.setNode(wheel1);
         rotatingWheel2.setNode(wheel2);
-
-        movingCarBody.setInterpolator(Interpolator.LINEAR);
-        movingWheel1.setInterpolator(Interpolator.LINEAR);
-        movingWheel2.setInterpolator(Interpolator.LINEAR);
-        rotatingWheel1.setInterpolator(Interpolator.LINEAR);
-        rotatingWheel2.setInterpolator(Interpolator.LINEAR);
     }
 
     public void carMovement() {
@@ -95,11 +106,11 @@ public class CarSimulationController implements Initializable {
         movingCarBody.setFromX(startX);
         movingCarBody.setToX(endX);
         movingWheel1.setDuration(Duration.seconds(duration));
-        movingWheel1.setFromX(wheel1.getCenterX());
-        movingWheel1.setToX(wheel1.getCenterX() + distance);
+        movingWheel1.setFromX(wheel1.getTranslateX());
+        movingWheel1.setToX(wheel1.getTranslateX() + distance);
         movingWheel2.setDuration(Duration.seconds(duration));
-        movingWheel2.setFromX(wheel2.getCenterX());
-        movingWheel2.setToX(wheel2.getCenterX() + distance);
+        movingWheel2.setFromX(wheel2.getTranslateX());
+        movingWheel2.setToX(wheel2.getTranslateX() + distance);
         
         movingCar.play();
     }

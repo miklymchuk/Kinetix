@@ -44,7 +44,7 @@ public class LinearMotionSelectionController implements Initializable {
         switchScene("CarAnimation.fxml");
     }
 
-
+    @FXML
     void freeFallButtonPressed(ActionEvent event) {
         switchScene("freeFall.fxml");
     }
