@@ -5,6 +5,7 @@
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
@@ -12,8 +13,7 @@
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
-
-<BorderPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="780.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.kinetix.FreeFallController">
+<BorderPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="780.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.kinetix.FreeFallController">
    <right>
       <VBox fx:id="fieldsBox" alignment="CENTER" prefHeight="200.0" prefWidth="400.0" spacing="25.0" BorderPane.alignment="CENTER">
          <children>
@@ -39,20 +39,23 @@
                      <font>
                         <Font size="24.0" />
                      </font>
+                     <toggleGroup>
+                        <ToggleGroup fx:id="gravityButtons" />
+                     </toggleGroup>
                   </RadioButton>
-                  <RadioButton fx:id="moonRadioBtn" mnemonicParsing="false" text="The Moon">
+                  <RadioButton fx:id="moonRadioBtn" mnemonicParsing="false" text="The Moon" toggleGroup="$gravityButtons">
                      <font>
                         <Font size="24.0" />
                      </font>
                   </RadioButton>
-                  <RadioButton fx:id="marsRadioBtn" mnemonicParsing="false" text="Mars">
+                  <RadioButton fx:id="marsRadioBtn" mnemonicParsing="false" text="Mars" toggleGroup="$gravityButtons">
                      <font>
                         <Font size="24.0" />
                      </font>
                   </RadioButton>
                </children>
             </VBox>
-            <Button fx:id="startBtn" mnemonicParsing="false" prefHeight="75.0" prefWidth="160.0" text="Start">
+            <Button fx:id="startBtn" mnemonicParsing="false" onAction="#startButtonPressed" prefHeight="75.0" prefWidth="160.0" text="Start">
                <font>
                   <Font size="36.0" />
                </font>

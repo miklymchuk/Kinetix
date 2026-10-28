@@ -7,6 +7,8 @@ package com.mycompany.kinetix;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.animation.Interpolator;
+import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -24,6 +26,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 /**
  * FXML Controller class
  *
@@ -72,6 +75,19 @@ public class FreeFallController implements Initializable {
     @FXML
     private Button exitBtn;
     
+    private double height;
+    
+    @FXML
+    private void startButtonPressed(ActionEvent event) {
+        freeFallObject.setTranslateY(height * -10);
+        TranslateTransition animation = new TranslateTransition(Duration.seconds(1), freeFallObject);
+        animation.setFromY(freeFallObject.getTranslateY());
+        animation.setToY(0);
+        animation.setCycleCount(1);
+        animation.setInterpolator(Interpolator.LINEAR);
+        animation.play();
+    }
+    
     @FXML
     private void exitButtonPressed(ActionEvent event) {
         switchScene("LinearMotionSelection.fxml");
@@ -96,7 +112,10 @@ public class FreeFallController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        heightValue.textProperty().bind(heightSlider.valueProperty().asString("%.0f"));
+        heightSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
+            height = newValue.doubleValue();
+        });
     }    
     
 }
