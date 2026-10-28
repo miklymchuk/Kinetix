@@ -44,17 +44,18 @@ public class CarSimulationController implements Initializable {
 
     @FXML
     void pauseBtnPressed(ActionEvent event) {
-        accelerationSlider.setDisable(false);
+        
     }
 
     @FXML
     void playBtnPressed(ActionEvent event) {
         carMovement();
+        accelerationSlider.setDisable(true);
     }
 
     @FXML
     void resetBtnPressed(ActionEvent event) {
-
+        accelerationSlider.setDisable(false);
     }
 
     private TranslateTransition movingCarBody = new TranslateTransition();
@@ -64,6 +65,7 @@ public class CarSimulationController implements Initializable {
     private RotateTransition rotatingWheel2 = new RotateTransition();
     private ParallelTransition movingCar = new ParallelTransition(movingCarBody, movingWheel1, movingWheel2, rotatingWheel1, rotatingWheel2);
     private double duration;
+    private double distance = 1500;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -85,12 +87,20 @@ public class CarSimulationController implements Initializable {
         if (acceleration <= 0) {
             return;
         }
-
+        
         double startX = carBody.getTranslateX();
-        double endX = 1800;
+        double endX = startX + distance;
+        duration = MechanicsUtility.time(distance, acceleration);
         movingCarBody.setDuration(Duration.seconds(duration));
         movingCarBody.setFromX(startX);
         movingCarBody.setToX(endX);
-        movingCarBody.play();
+        movingWheel1.setDuration(Duration.seconds(duration));
+        movingWheel1.setFromX(wheel1.getCenterX());
+        movingWheel1.setToX(wheel1.getCenterX() + distance);
+        movingWheel2.setDuration(Duration.seconds(duration));
+        movingWheel2.setFromX(wheel2.getCenterX());
+        movingWheel2.setToX(wheel2.getCenterX() + distance);
+        
+        movingCar.play();
     }
 }
