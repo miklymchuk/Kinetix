@@ -14,7 +14,7 @@ import javafx.scene.shape.Polygon;
 public class CarSimulationController implements Initializable {
 
     @FXML
-    private Slider accelerationSlider;
+    private Slider velocitySlider;
 
     @FXML
     private Polygon carBody;
@@ -25,17 +25,21 @@ public class CarSimulationController implements Initializable {
     @FXML
     private Circle wheel2;
     
-    private int animationDuration;
+    private TranslateTransition movingCarBody = new TranslateTransition();
+    private TranslateTransition movingWheel1 = new TranslateTransition();
+    private TranslateTransition movingWheel2 = new TranslateTransition();
+    private RotateTransition rotatingWheel1 = new RotateTransition();
+    private RotateTransition rotatingWheel2 = new RotateTransition();
+    private ParallelTransition movingCar = new ParallelTransition(movingCarBody, movingWheel1, movingWheel2, rotatingWheel1, rotatingWheel2);
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        TranslateTransition movingCarBody = new TranslateTransition();
-        TranslateTransition movingWheel1 = new TranslateTransition();
-        TranslateTransition movingWheel2 = new TranslateTransition();
+        movingCarBody.setNode(carBody);
+        movingWheel1.setNode(wheel1);
+        movingWheel2.setNode(wheel2);
+    }
+    
+    public static void carMovement() {
         
-        RotateTransition rotatingWheel1 = new RotateTransition();
-        RotateTransition rotatingWheel2 = new RotateTransition();
-        
-        ParallelTransition movingCar = new ParallelTransition(movingCarBody, movingWheel1, movingWheel2, rotatingWheel1, rotatingWheel2);
     }
 }
