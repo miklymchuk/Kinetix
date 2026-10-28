@@ -50,10 +50,6 @@ public class SelectPageController {
         switchScene("MainMenu.fxml");
     }
     
-    public Button getReturnButton() {
-        return returnButton;
-    }
-    
     /**
      * switches the scene of the stage
      * @param fxml the FXML file

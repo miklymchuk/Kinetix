@@ -21,7 +21,6 @@ import javafx.stage.Stage;
  */
 public class LinearMotionSelectionController implements Initializable {
 
-
     @FXML
     private BorderPane root;
     @FXML
@@ -40,7 +39,12 @@ public class LinearMotionSelectionController implements Initializable {
         switchScene("selectpage.fxml");
     }
     
-    
+    @FXML
+    void carAnimationBtnPressed(ActionEvent event) {
+        switchScene("CarAnimation.fxml");
+    }
+
+
     /**
      * switches the scene of the stage
      * @param fxml the fxml file
@@ -58,7 +62,6 @@ public class LinearMotionSelectionController implements Initializable {
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        carAnimationBtn.setOnAction(event -> switchScene("CarAnimation.fxml"));
+        
     }    
-    
 }
