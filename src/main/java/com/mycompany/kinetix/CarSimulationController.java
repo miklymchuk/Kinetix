@@ -79,8 +79,7 @@ public class CarSimulationController implements Initializable {
     private TranslateTransition movingWheel2 = new TranslateTransition();
     private RotateTransition rotatingWheel1 = new RotateTransition();
     private RotateTransition rotatingWheel2 = new RotateTransition();
-    private ParallelTransition movingCar = new ParallelTransition(movingCarBody, movingWheel1, movingWheel2, rotatingWheel1, rotatingWheel2);
-    private double duration;
+    private ParallelTransition movingCar;
     private double distance = 1500;
     private static final double PIXELS_PER_METER = 5;
 
@@ -99,19 +98,39 @@ public class CarSimulationController implements Initializable {
             return;
         }
         
-        double startX = carBody.getTranslateX();
-        double endX = startX + distance;
-        duration = MechanicsUtility.time(distance, acceleration);
-        movingCarBody.setDuration(Duration.seconds(duration));
-        movingCarBody.setFromX(startX);
-        movingCarBody.setToX(endX);
-        movingWheel1.setDuration(Duration.seconds(duration));
-        movingWheel1.setFromX(wheel1.getTranslateX());
-        movingWheel1.setToX(wheel1.getTranslateX() + distance);
-        movingWheel2.setDuration(Duration.seconds(duration));
-        movingWheel2.setFromX(wheel2.getTranslateX());
-        movingWheel2.setToX(wheel2.getTranslateX() + distance);
+        if (movingCar != null) {
+            movingCar.stop();
+        }
         
+        double distanceInMeters = distance / PIXELS_PER_METER;
+        double seconds = MechanicsUtility.time(distance, acceleration);
+        Duration time = Duration.seconds(seconds);
+        
+        double startBodyX = carBody.getTranslateX();
+        movingCarBody.setDuration(time);
+        movingCarBody.setFromX(startBodyX);
+        movingCarBody.setToX(startBodyX + distance);
+        
+        double startWheel1X = wheel1.getTranslateX();
+        movingWheel1.setDuration(time);
+        movingWheel1.setFromX(startWheel1X);
+        movingWheel1.setToX(startWheel1X + distance);
+        
+        double startWheel2X = wheel2.getTranslateX();
+        movingWheel2.setDuration(time);
+        movingWheel2.setFromX(startWheel2X);
+        movingWheel2.setToX(startWheel2X + distance);
+        
+        double degrees = Math.toDegrees(distance / wheel1.getRadius());
+        rotatingWheel1.setDuration(time);
+        rotatingWheel1.setFromAngle(wheel1.getRotate());
+        rotatingWheel1.setToAngle(degrees);
+        rotatingWheel2.setDuration(time);
+        rotatingWheel2.setFromAngle(wheel2.getRotate());
+        rotatingWheel2.setToAngle(degrees);
+        
+        ParallelTransition movingCar = new ParallelTransition(movingCarBody, movingWheel1, movingWheel2, rotatingWheel1, rotatingWheel2);
+        accelerationSlider.setDisable(true);
         movingCar.play();
     }
 }
