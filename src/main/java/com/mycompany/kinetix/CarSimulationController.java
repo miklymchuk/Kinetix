@@ -1,5 +1,6 @@
 package com.mycompany.kinetix;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.animation.Animation;
@@ -8,12 +9,15 @@ import javafx.animation.RotateTransition;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Polygon;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class CarSimulationController implements Initializable {
@@ -32,6 +36,8 @@ public class CarSimulationController implements Initializable {
 
     @FXML
     private Button resetBtn;
+    
+    @FXML Button returnBtn;
 
     @FXML
     private Slider accelerationSlider;
@@ -76,6 +82,11 @@ public class CarSimulationController implements Initializable {
         wheel2.setRotate(0);
         accelerationSlider.setDisable(false);
     }
+    
+    @FXML
+    void returnBtnPressed(ActionEvent event) {
+        switchScene("linearMotionSelection.fxml");
+    }
 
     private TranslateTransition movingCarBody = new TranslateTransition();
     private TranslateTransition movingWheel1 = new TranslateTransition();
@@ -100,7 +111,7 @@ public class CarSimulationController implements Initializable {
         rotatingWheel1.setInterpolator(MechanicsUtility.accelerationInterpolator);
         rotatingWheel2.setInterpolator(MechanicsUtility.accelerationInterpolator);
         
-        accelerationSliderLabel.textProperty().bind(accelerationSlider.valueProperty().asString("Acceleration: %.1f m/s²"));
+        accelerationSliderLabel.textProperty().bind(accelerationSlider.valueProperty().asString("%.1f m/s²"));
     }
 
     public void carMovement() {
@@ -144,5 +155,20 @@ public class CarSimulationController implements Initializable {
         accelerationSlider.setDisable(true);
         movingCar.play();
         movingCar.setOnFinished(event -> accelerationSlider.setDisable(false));
+    }
+    
+    /**
+     * switches the scene of the stage
+     * @param fxml the fxml file
+     */
+    public void switchScene(String fxml) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxml));
+            Stage stage = (Stage) returnBtn.getScene().getWindow();
+            stage.setScene(new Scene(loader.load()));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
