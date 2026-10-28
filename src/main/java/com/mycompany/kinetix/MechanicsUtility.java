@@ -1,5 +1,6 @@
 package com.mycompany.kinetix;
 import java.lang.Math;
+import javafx.animation.Interpolator;
 
 /**
  *
@@ -7,6 +8,12 @@ import java.lang.Math;
  */
 public class MechanicsUtility {
     public static final double GRAVITY_CONSTANT = 9.81;
+    public static Interpolator accelerationInterpolator = new Interpolator() {
+        @Override
+        protected double curve(double t) {
+            return t * t;
+        }
+    };
     
     public MechanicsUtility() {};
     /*

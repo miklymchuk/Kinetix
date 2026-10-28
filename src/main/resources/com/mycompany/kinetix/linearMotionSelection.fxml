@@ -7,11 +7,11 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="780.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.kinetix.LinearMotionSelectionController">
+<BorderPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="780.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.kinetix.LinearMotionSelectionController">
    <center>
       <HBox fx:id="simulationButtonHBox" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="200.0" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="carAnimationBtn" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="500.0" prefWidth="500.0" text="Car Animation">
+            <Button fx:id="carAnimationBtn" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#carAnimationBtnPressed" prefHeight="500.0" prefWidth="500.0" text="Car Animation">
                <font>
                   <Font size="64.0" />
                </font>
