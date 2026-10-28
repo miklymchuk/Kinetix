@@ -2,6 +2,7 @@ package com.mycompany.kinetix;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.animation.Interpolator;
 import javafx.animation.ParallelTransition;
 import javafx.animation.RotateTransition;
 import javafx.animation.TranslateTransition;
@@ -37,9 +38,22 @@ public class CarSimulationController implements Initializable {
         movingCarBody.setNode(carBody);
         movingWheel1.setNode(wheel1);
         movingWheel2.setNode(wheel2);
+        rotatingWheel1.setNode(wheel1);
+        rotatingWheel2.setNode(wheel2);
+        
+        movingCarBody.setInterpolator(Interpolator.LINEAR);
+        movingWheel1.setInterpolator(Interpolator.LINEAR);
+        movingWheel2.setInterpolator(Interpolator.LINEAR);
+        rotatingWheel1.setInterpolator(Interpolator.LINEAR);
+        rotatingWheel2.setInterpolator(Interpolator.LINEAR);
     }
     
-    public static void carMovement() {
+    public void carMovement() {
+        double velocity = velocitySlider.getValue();
+        if (velocity <= 0) {
+            return;
+        }
         
+        double startX = carBody.getTranslateX();
     }
 }
