@@ -7,6 +7,7 @@ package com.mycompany.kinetix;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.animation.Animation;
 import javafx.animation.Interpolator;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
@@ -80,10 +81,11 @@ public class FreeFallController implements Initializable {
     @FXML
     private void startButtonPressed(ActionEvent event) {
         freeFallObject.setTranslateY(height * -10);
-        TranslateTransition animation = new TranslateTransition(Duration.seconds(1), freeFallObject);
+        double time = MechanicsUtility.time(height, MechanicsUtility.GRAVITY_CONSTANT);
+        TranslateTransition animation = new TranslateTransition(Duration.seconds(time), freeFallObject);
+        animation.setCycleCount(1);
         animation.setFromY(freeFallObject.getTranslateY());
         animation.setToY(0);
-        animation.setCycleCount(1);
         animation.setInterpolator(Interpolator.LINEAR);
         animation.play();
     }

@@ -8,7 +8,7 @@ import java.lang.Math;
 public class MechanicsUtility {
     public static final double GRAVITY_CONSTANT = 9.81;
     
-    private MechanicsUtility() {};
+    public MechanicsUtility() {};
     /*
     Note: all measurements are in meters, meters per second, meters per second square, seconds, radians, kilograms, newtons,
     kilogram meter per second, newton meter, depending on the situation
