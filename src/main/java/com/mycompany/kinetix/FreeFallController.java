@@ -7,8 +7,6 @@ package com.mycompany.kinetix;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-import javafx.animation.Animation;
-import javafx.animation.Interpolator;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -78,15 +76,21 @@ public class FreeFallController implements Initializable {
     
     private double height;
     
+    private double time;
+    
+    TranslateTransition animation = new TranslateTransition();
+    
+    long startTime = System.currentTimeMillis();
+    
     @FXML
     private void startButtonPressed(ActionEvent event) {
         freeFallObject.setTranslateY(height * -10);
-        double time = MechanicsUtility.time(height, MechanicsUtility.GRAVITY_CONSTANT);
-        TranslateTransition animation = new TranslateTransition(Duration.seconds(time), freeFallObject);
-        animation.setCycleCount(1);
+        time = MechanicsUtility.time(height, MechanicsUtility.GRAVITY_CONSTANT);
+        animation.setNode(freeFallObject);
+        animation.setDuration(Duration.seconds(time));
         animation.setFromY(freeFallObject.getTranslateY());
         animation.setToY(0);
-        animation.setInterpolator(Interpolator.LINEAR);
+        animation.setInterpolator(MechanicsUtility.accelerationInterpolator);
         animation.play();
     }
     
@@ -114,7 +118,7 @@ public class FreeFallController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        heightValue.textProperty().bind(heightSlider.valueProperty().asString("%.0f"));
+        heightValue.textProperty().bind(heightSlider.valueProperty().asString("%.1f m"));
         heightSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
             height = newValue.doubleValue();
         });
