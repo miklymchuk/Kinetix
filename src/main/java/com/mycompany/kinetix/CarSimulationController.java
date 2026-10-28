@@ -14,7 +14,7 @@ import javafx.scene.shape.Polygon;
 public class CarSimulationController implements Initializable {
 
     @FXML
-    private Slider carAccelerationSlider;
+    private Slider accelerationSlider;
 
     @FXML
     private Polygon carBody;
@@ -37,6 +37,5 @@ public class CarSimulationController implements Initializable {
         RotateTransition rotatingWheel2 = new RotateTransition();
         
         ParallelTransition movingCar = new ParallelTransition(movingCarBody, movingWheel1, movingWheel2, rotatingWheel1, rotatingWheel2);
-        
     }
 }

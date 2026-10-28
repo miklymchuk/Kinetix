@@ -40,6 +40,7 @@ public class LinearMotionSelectionController implements Initializable {
         switchScene("selectpage.fxml");
     }
     
+    
     /**
      * switches the scene of the stage
      * @param fxml the fxml file
@@ -57,7 +58,7 @@ public class LinearMotionSelectionController implements Initializable {
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        carAnimationBtn.setOnAction(event -> switchScene("CarAnimation.fxml"));
     }    
     
 }
