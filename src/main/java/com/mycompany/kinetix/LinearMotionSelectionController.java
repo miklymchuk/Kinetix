@@ -17,7 +17,7 @@ import javafx.stage.Stage;
 /**
  * FXML Controller class
  *
- * @author 6312398
+ * @author Michael Klymchuk
  */
 public class LinearMotionSelectionController implements Initializable {
 

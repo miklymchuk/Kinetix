@@ -13,12 +13,12 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
-
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -29,7 +29,7 @@ import javafx.util.Duration;
 /**
  * FXML Controller class
  *
- * @author mikly
+ * @author Michael Klymchuk
  */
 public class FreeFallController implements Initializable {
 
@@ -73,10 +73,14 @@ public class FreeFallController implements Initializable {
     private Button resetBtn;
     @FXML
     private Button exitBtn;
+    @FXML
+    private ToggleGroup gravityButtons;
     
     private double height;
     
     private double time;
+    
+    private double acceleration = MechanicsUtility.GRAVITY_CONSTANT;
     
     TranslateTransition animation = new TranslateTransition();
     
@@ -85,7 +89,7 @@ public class FreeFallController implements Initializable {
     @FXML
     private void startButtonPressed(ActionEvent event) {
         freeFallObject.setTranslateY(height * -10);
-        time = MechanicsUtility.time(height, MechanicsUtility.GRAVITY_CONSTANT);
+        time = MechanicsUtility.time(height, acceleration);
         animation.setNode(freeFallObject);
         animation.setDuration(Duration.seconds(time));
         animation.setFromY(freeFallObject.getTranslateY());
@@ -122,6 +126,15 @@ public class FreeFallController implements Initializable {
         heightSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
             height = newValue.doubleValue();
         });
-    }    
-    
+        
+        gravityButtons.selectedToggleProperty().addListener((ov, oldButton, newButton) -> {
+            if (earthRadioBtn.isSelected()) {
+                acceleration = MechanicsUtility.GRAVITY_CONSTANT;
+            } else if (moonRadioBtn.isSelected()) {
+                acceleration = MechanicsUtility.MOON_GRAVITY_CONSTANT;
+            } else {
+                acceleration = MechanicsUtility.MARS_GRAVITY_CONSTANT;
+            }
+        });
+    }
 }
