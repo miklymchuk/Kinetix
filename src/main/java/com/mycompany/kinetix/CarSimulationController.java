@@ -54,12 +54,12 @@ public class CarSimulationController implements Initializable {
         if (movingCar != null && movingCar.getStatus() == Animation.Status.RUNNING) {
             return;
         }
-        
+
         if (movingCar != null && movingCar.getStatus() == Animation.Status.PAUSED) {
             movingCar.play();
             return;
         }
-        
+
         carMovement();
     }
 
@@ -68,7 +68,7 @@ public class CarSimulationController implements Initializable {
         if (movingCar != null) {
             movingCar.stop();
         }
-        
+
         carBody.setTranslateX(0);
         wheel1.setTranslateX(0);
         wheel2.setTranslateX(0);
@@ -83,7 +83,7 @@ public class CarSimulationController implements Initializable {
     private RotateTransition rotatingWheel1 = new RotateTransition();
     private RotateTransition rotatingWheel2 = new RotateTransition();
     private ParallelTransition movingCar;
-    private double distance = 1500;
+    private double distance = 1900;
     private static final double PIXELS_PER_METER = 5;
 
     @Override
@@ -93,12 +93,14 @@ public class CarSimulationController implements Initializable {
         movingWheel2.setNode(wheel2);
         rotatingWheel1.setNode(wheel1);
         rotatingWheel2.setNode(wheel2);
-        
+
         movingCarBody.setInterpolator(MechanicsUtility.accelerationInterpolator);
         movingWheel1.setInterpolator(MechanicsUtility.accelerationInterpolator);
         movingWheel2.setInterpolator(MechanicsUtility.accelerationInterpolator);
         rotatingWheel1.setInterpolator(MechanicsUtility.accelerationInterpolator);
         rotatingWheel2.setInterpolator(MechanicsUtility.accelerationInterpolator);
+        
+        accelerationSliderLabel.textProperty().bind(accelerationSlider.valueProperty().asString("Acceleration: %.1f m/s²"));
     }
 
     public void carMovement() {
@@ -106,30 +108,30 @@ public class CarSimulationController implements Initializable {
         if (acceleration <= 0) {
             return;
         }
-        
+
         if (movingCar != null) {
             movingCar.stop();
         }
-        
+
         double distanceInMeters = distance / PIXELS_PER_METER;
         double seconds = MechanicsUtility.time(distanceInMeters, acceleration);
         Duration time = Duration.seconds(seconds);
-        
+
         double startBodyX = carBody.getTranslateX();
         movingCarBody.setDuration(time);
         movingCarBody.setFromX(startBodyX);
-        movingCarBody.setToX(startBodyX + distanceInMeters);
-        
+        movingCarBody.setToX(startBodyX + distance);
+
         double startWheel1X = wheel1.getTranslateX();
         movingWheel1.setDuration(time);
         movingWheel1.setFromX(startWheel1X);
-        movingWheel1.setToX(startWheel1X + distanceInMeters);
-        
+        movingWheel1.setToX(startWheel1X + distance);
+
         double startWheel2X = wheel2.getTranslateX();
         movingWheel2.setDuration(time);
         movingWheel2.setFromX(startWheel2X);
-        movingWheel2.setToX(startWheel2X + distanceInMeters);
-        
+        movingWheel2.setToX(startWheel2X + distance);
+
         double degrees = Math.toDegrees(distance / wheel1.getRadius());
         rotatingWheel1.setDuration(time);
         rotatingWheel1.setFromAngle(wheel1.getRotate());
@@ -137,10 +139,10 @@ public class CarSimulationController implements Initializable {
         rotatingWheel2.setDuration(time);
         rotatingWheel2.setFromAngle(wheel2.getRotate());
         rotatingWheel2.setByAngle(degrees);
-        
+
         movingCar = new ParallelTransition(movingCarBody, movingWheel1, movingWheel2, rotatingWheel1, rotatingWheel2);
         accelerationSlider.setDisable(true);
         movingCar.play();
-        
+        movingCar.setOnFinished(event -> accelerationSlider.setDisable(false));
     }
 }
