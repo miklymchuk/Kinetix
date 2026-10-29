@@ -78,11 +78,13 @@ public class FreeFallController implements Initializable {
     
     private double height;
     
+    private double currentHeight;
+    
     private double time;
     
     private double currentTime;
     
-    private double velocity;
+    private double currentVelocity;
     
     private double acceleration = MechanicsUtility.GRAVITY_CONSTANT;
     
@@ -100,14 +102,16 @@ public class FreeFallController implements Initializable {
         animation.setToY(0);
         animation.setInterpolator(MechanicsUtility.accelerationInterpolator);
         animation.play();
-        
-        accelerationInfo.setText("Acceleration: " + acceleration + "m/s²");
     }
     
     @FXML
     private void resetButtonPressed(ActionEvent event) {
         animation.stop();
         freeFallObject.setTranslateY(0);
+        heightInfo.setText("Height: 0m");
+        velocityInfo.setText("Velocity: 0m/s");
+        accelerationInfo.setText("Acceleration: 0m/s²");
+        
     }
     
     @FXML
@@ -135,12 +139,36 @@ public class FreeFallController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         heightValue.textProperty().bind(heightSlider.valueProperty().asString("%.1f m"));
-        heightInfo.textProperty().bind(heightSlider.valueProperty().asString("Position: %.1f m"));
         heightSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
             height = newValue.doubleValue();
         });
         
-        velocityInfo.
+        freeFallObject.translateYProperty().addListener(change -> {
+            currentHeight = (freeFallObject.getTranslateY() / -10);
+            String currentHeightText = "" + currentHeight;
+            if (currentHeight >= 10) {
+                currentHeightText = currentHeightText.substring(0, 4);
+            } else if (currentHeight == 0) {
+                currentHeightText = "0";
+            } else {
+                currentHeightText = currentHeightText.substring(0, 3);
+            }
+            heightInfo.setText("Height: " + currentHeightText + "m");
+            
+            currentTime = MechanicsUtility.time(height - currentHeight, acceleration);
+            currentVelocity = MechanicsUtility.finalVelocity(0, acceleration, currentTime);
+            String currentVelocityText = "" + currentVelocity;
+            if (currentVelocity >= 10) {
+                currentVelocityText = currentVelocityText.substring(0, 4);
+            } else if (currentVelocity == 0) {
+                currentVelocityText = "0";
+            } else {
+                currentVelocityText = currentVelocityText.substring(0, 3);
+            }
+            velocityInfo.setText("Velocity: " + currentVelocityText + "m/s");
+            
+            accelerationInfo.setText("Acceleration: " + acceleration + "m/s²");
+        });
         
         gravityButtons.selectedToggleProperty().addListener((ov, oldButton, newButton) -> {
             if (earthRadioBtn.isSelected()) {
