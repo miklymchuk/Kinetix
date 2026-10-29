@@ -80,6 +80,10 @@ public class FreeFallController implements Initializable {
     
     private double time;
     
+    private double currentTime;
+    
+    private double velocity;
+    
     private double acceleration = MechanicsUtility.GRAVITY_CONSTANT;
     
     TranslateTransition animation = new TranslateTransition();
@@ -96,6 +100,14 @@ public class FreeFallController implements Initializable {
         animation.setToY(0);
         animation.setInterpolator(MechanicsUtility.accelerationInterpolator);
         animation.play();
+        
+        accelerationInfo.setText("Acceleration: " + acceleration + "m/s²");
+    }
+    
+    @FXML
+    private void resetButtonPressed(ActionEvent event) {
+        animation.stop();
+        freeFallObject.setTranslateY(0);
     }
     
     @FXML
@@ -123,9 +135,12 @@ public class FreeFallController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         heightValue.textProperty().bind(heightSlider.valueProperty().asString("%.1f m"));
+        heightInfo.textProperty().bind(heightSlider.valueProperty().asString("Position: %.1f m"));
         heightSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
             height = newValue.doubleValue();
         });
+        
+        velocityInfo.
         
         gravityButtons.selectedToggleProperty().addListener((ov, oldButton, newButton) -> {
             if (earthRadioBtn.isSelected()) {
@@ -136,5 +151,6 @@ public class FreeFallController implements Initializable {
                 acceleration = MechanicsUtility.MARS_GRAVITY_CONSTANT;
             }
         });
+              
     }
 }

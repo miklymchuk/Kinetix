@@ -60,7 +60,7 @@
                   <Font size="36.0" />
                </font>
             </Button>
-            <Button fx:id="resetBtn" layoutX="80.0" layoutY="588.0" mnemonicParsing="false" prefHeight="75.0" prefWidth="160.0" text="Reset">
+            <Button fx:id="resetBtn" layoutX="80.0" layoutY="588.0" mnemonicParsing="false" onAction="#resetButtonPressed" prefHeight="75.0" prefWidth="160.0" text="Reset">
                <font>
                   <Font size="36.0" />
                </font>
@@ -86,7 +86,7 @@
                   <Font size="64.0" />
                </font>
             </Label>
-            <Label fx:id="accelerationInfo" layoutX="251.0" layoutY="10.0" text="Acceleration: 0m/s2">
+            <Label fx:id="accelerationInfo" layoutX="251.0" layoutY="10.0" text="Acceleration: 0m/s²">
                <font>
                   <Font size="64.0" />
                </font>
