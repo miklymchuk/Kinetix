@@ -113,7 +113,10 @@ public class CarSimulationController implements Initializable {
         
         accelerationSliderLabel.textProperty().bind(accelerationSlider.valueProperty().asString("%.1f m/s²"));
     }
-
+    
+    /**
+     * provides movement for the car and its components
+     */
     public void carMovement() {
         double acceleration = accelerationSlider.getValue();
         if (acceleration <= 0) {

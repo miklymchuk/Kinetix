@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
- */
 package com.mycompany.kinetix;
 
 import java.io.IOException;
@@ -26,11 +22,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-/**
- * FXML Controller class
- *
- * @author Michael Klymchuk
- */
+
 public class FreeFallController implements Initializable {
 
     @FXML
