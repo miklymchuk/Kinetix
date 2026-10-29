@@ -13,7 +13,7 @@
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="780.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.kinetix.FreeFallController">
+<BorderPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="780.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.kinetix.FreeFallController">
    <right>
       <VBox fx:id="fieldsBox" alignment="CENTER" prefHeight="200.0" prefWidth="400.0" spacing="25.0" BorderPane.alignment="CENTER">
          <children>
@@ -35,7 +35,7 @@
                         <Font size="36.0" />
                      </font>
                   </Label>
-                  <RadioButton fx:id="earthRadioBtn" mnemonicParsing="false" text="Earth">
+                  <RadioButton fx:id="earthRadioBtn" mnemonicParsing="false" selected="true" text="Earth">
                      <font>
                         <Font size="24.0" />
                      </font>
@@ -60,7 +60,7 @@
                   <Font size="36.0" />
                </font>
             </Button>
-            <Button fx:id="resetBtn" layoutX="80.0" layoutY="588.0" mnemonicParsing="false" prefHeight="75.0" prefWidth="160.0" text="Reset">
+            <Button fx:id="resetBtn" layoutX="80.0" layoutY="588.0" mnemonicParsing="false" onAction="#resetButtonPressed" prefHeight="75.0" prefWidth="160.0" text="Reset">
                <font>
                   <Font size="36.0" />
                </font>
@@ -81,12 +81,12 @@
                   <Font size="64.0" />
                </font>
             </Label>
-            <Label fx:id="velocityInfo" layoutX="10.0" layoutY="10.0" text="Velocity: 0m">
+            <Label fx:id="velocityInfo" layoutX="10.0" layoutY="10.0" text="Velocity: 0m/s">
                <font>
                   <Font size="64.0" />
                </font>
             </Label>
-            <Label fx:id="accelerationInfo" layoutX="251.0" layoutY="10.0" text="Acceleration: 0m">
+            <Label fx:id="accelerationInfo" layoutX="251.0" layoutY="10.0" text="Acceleration: 0m/s²">
                <font>
                   <Font size="64.0" />
                </font>

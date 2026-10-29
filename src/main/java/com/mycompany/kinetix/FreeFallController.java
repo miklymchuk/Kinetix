@@ -3,19 +3,18 @@ package com.mycompany.kinetix;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-import javafx.animation.Interpolator;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
-
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -66,18 +65,45 @@ public class FreeFallController implements Initializable {
     private Button resetBtn;
     @FXML
     private Button exitBtn;
+    @FXML
+    private ToggleGroup gravityButtons;
     
     private double height;
+    
+    private double currentHeight;
+    
+    private double time;
+    
+    private double currentTime;
+    
+    private double currentVelocity;
+    
+    private double acceleration = MechanicsUtility.GRAVITY_CONSTANT;
+    
+    TranslateTransition animation = new TranslateTransition();
+    
+    long startTime = System.currentTimeMillis();
     
     @FXML
     private void startButtonPressed(ActionEvent event) {
         freeFallObject.setTranslateY(height * -10);
-        TranslateTransition animation = new TranslateTransition(Duration.seconds(1), freeFallObject);
+        time = MechanicsUtility.time(height, acceleration);
+        animation.setNode(freeFallObject);
+        animation.setDuration(Duration.seconds(time));
         animation.setFromY(freeFallObject.getTranslateY());
         animation.setToY(0);
-        animation.setCycleCount(1);
-        animation.setInterpolator(Interpolator.LINEAR);
+        animation.setInterpolator(MechanicsUtility.accelerationInterpolator);
         animation.play();
+    }
+    
+    @FXML
+    private void resetButtonPressed(ActionEvent event) {
+        animation.stop();
+        freeFallObject.setTranslateY(0);
+        heightInfo.setText("Height: 0m");
+        velocityInfo.setText("Velocity: 0m/s");
+        accelerationInfo.setText("Acceleration: 0m/s²");
+        
     }
     
     @FXML
@@ -104,10 +130,47 @@ public class FreeFallController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        heightValue.textProperty().bind(heightSlider.valueProperty().asString("%.0f"));
+        heightValue.textProperty().bind(heightSlider.valueProperty().asString("%.1f m"));
         heightSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
             height = newValue.doubleValue();
         });
-    }    
-    
+        
+        freeFallObject.translateYProperty().addListener(change -> {
+            currentHeight = (freeFallObject.getTranslateY() / -10);
+            String currentHeightText = "" + currentHeight;
+            if (currentHeight >= 10) {
+                currentHeightText = currentHeightText.substring(0, 4);
+            } else if (currentHeight == 0) {
+                currentHeightText = "0";
+            } else {
+                currentHeightText = currentHeightText.substring(0, 3);
+            }
+            heightInfo.setText("Height: " + currentHeightText + "m");
+            
+            currentTime = MechanicsUtility.time(height - currentHeight, acceleration);
+            currentVelocity = MechanicsUtility.finalVelocity(0, acceleration, currentTime);
+            String currentVelocityText = "" + currentVelocity;
+            if (currentVelocity >= 10) {
+                currentVelocityText = currentVelocityText.substring(0, 4);
+            } else if (currentVelocity == 0) {
+                currentVelocityText = "0";
+            } else {
+                currentVelocityText = currentVelocityText.substring(0, 3);
+            }
+            velocityInfo.setText("Velocity: " + currentVelocityText + "m/s");
+            
+            accelerationInfo.setText("Acceleration: " + acceleration + "m/s²");
+        });
+        
+        gravityButtons.selectedToggleProperty().addListener((ov, oldButton, newButton) -> {
+            if (earthRadioBtn.isSelected()) {
+                acceleration = MechanicsUtility.GRAVITY_CONSTANT;
+            } else if (moonRadioBtn.isSelected()) {
+                acceleration = MechanicsUtility.MOON_GRAVITY_CONSTANT;
+            } else {
+                acceleration = MechanicsUtility.MARS_GRAVITY_CONSTANT;
+            }
+        });
+              
+    }
 }

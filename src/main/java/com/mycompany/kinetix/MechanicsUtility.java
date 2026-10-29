@@ -8,6 +8,8 @@ import javafx.animation.Interpolator;
  */
 public class MechanicsUtility {
     public static final double GRAVITY_CONSTANT = 9.81;
+    public static final double MOON_GRAVITY_CONSTANT = 1.62;
+    public static final double MARS_GRAVITY_CONSTANT = 3.72;
     public static Interpolator accelerationInterpolator = new Interpolator() { //Custom interpolator
         @Override
         protected double curve(double t) {
@@ -15,7 +17,7 @@ public class MechanicsUtility {
         }
     };
     
-    private MechanicsUtility() {};
+    public MechanicsUtility() {};
     /*
     Note: all measurements are in meters, meters per second, meters per second square, seconds, radians, kilograms, newtons,
     kilogram meter per second, newton meter, depending on the situation
