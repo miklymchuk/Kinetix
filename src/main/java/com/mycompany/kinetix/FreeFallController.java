@@ -107,7 +107,7 @@ public class FreeFallController implements Initializable {
     }
     
     @FXML
-    private void exitButtonPressed(ActionEvent event) {
+    private void returnButtonPressed(ActionEvent event) {
         switchScene("LinearMotionSelection.fxml");
     }
     
