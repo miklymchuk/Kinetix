@@ -37,7 +37,7 @@ public class SelectPageController {
 
     @FXML
     void projectileMotionButtonPressed(ActionEvent event) {
-
+        switchScene("TwoDKinematics.fxml");
     }
 
     @FXML
