@@ -1,3 +1,4 @@
+
 package com.mycompany.kinetix;
 
 import javafx.application.Application;

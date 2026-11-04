@@ -27,7 +27,7 @@ public class SelectPageController {
     
     @FXML
     void linMomentumButtonPressed(ActionEvent event) {
-
+        switchScene("linearMomentum.fxml");
     }
 
     @FXML
