@@ -5,6 +5,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import javafx.animation.ParallelTransition;
+import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -19,6 +21,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 /**
  * FXML Controller class
  *
@@ -52,15 +55,29 @@ public class TwoDKinematicsController implements Initializable {
     @FXML
     private Pane groundLevel;
     
+    private double ballVelocity;
+    private double angle;
+    private double time;
     private static final double BALL_RADIUS = 19;
-    
     private List<Circle> circles = new ArrayList();
+    private ParallelTransition ballsAnimations;
+    private ParallelTransition ball1Animation;
+    private ParallelTransition ball2Animation;
+    private ParallelTransition ball3Animation;
+    private static final int MAX_BALLS_IN_SCENE = 3;
+    
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        angleSlider.valueProperty().addListener((obs, oldV, newV) -> {
+            angle = (double) newV;
+        });
+        
+        velocitySlider.valueProperty().addListener((obs, oldV, newV) -> {
+            ballVelocity = (double) newV;
+        });
     }    
     
     @FXML
@@ -79,10 +96,12 @@ public class TwoDKinematicsController implements Initializable {
 
     @FXML
     private void pauseBtnPressed(ActionEvent event) {
+        ballsAnimations.pause();
     }
 
     @FXML
     private void resetBtnPressed(ActionEvent event) {
+        ballsAnimations.stop();
     }
     
     /**
@@ -109,7 +128,24 @@ public class TwoDKinematicsController implements Initializable {
         groundLevel.getChildren().add(circle);
     }
     
-    public void canonBallMotion() {
+    public void canonBallMotion(Circle circle) {
+        double startX = circle.getCenterX();
+        double startY = circle.getCenterY();
+        
+        TranslateTransition transX = new TranslateTransition();
+        TranslateTransition transY = new TranslateTransition();
+        
+        transX.setFromX(startX);
+        transX.setToX(MechanicsUtility.projectileX(ballVelocity, angle, time));
+        
+        transY.setFromY(startY);
+        transY.setToY(MechanicsUtility.projectileY(ballVelocity, angle, time));
+        
+        transX.setDuration(Duration.seconds(time));
+        transY.setDuration(Duration.seconds(time));
+    }
+    
+    public void resetBalls() {
         
     }
 }
