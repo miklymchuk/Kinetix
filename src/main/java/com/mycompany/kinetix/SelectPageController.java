@@ -32,7 +32,7 @@ public class SelectPageController {
 
     @FXML
     void linearMotionButtonPressed(ActionEvent event) {
-
+        switchScene("linearMotionSelection.fxml");
     }
 
     @FXML
@@ -42,16 +42,12 @@ public class SelectPageController {
 
     @FXML
     void rotDynamicsButtonPressed(ActionEvent event) {
-
+         switchScene("RotDynamicsAnimation.fxml");
     }
     
     @FXML
     public void returnButtonPressed(ActionEvent event) {
         switchScene("MainMenu.fxml");
-    }
-    
-    public Button getReturnButton() {
-        return returnButton;
     }
     
     /**
