@@ -165,7 +165,7 @@ public class TwoDKinematicsController implements Initializable {
         }
         
         if (circles.size() >= MAX_BALLS_IN_SCENE) {
-            circles.remove(0);
+            removeBall(0);
         }
         
         double angleRad = Math.toRadians(angle);
@@ -256,5 +256,19 @@ public class TwoDKinematicsController implements Initializable {
         height.setText("Height: ");
         velocity.setText("Velocity: ");
         acceleration.setText("Acceleration: ");
+    }
+    
+    /**
+     * removes the ball when the limit of cannon balls in the scene reaches the max
+     * @param index the index of the next cannon ball
+     */
+    private void removeBall(int index) {
+        ParallelTransition animation = animations.remove(index);
+        animation.stop();
+        if (animation == latest) {
+            latest = null;
+        }
+        
+        groundLevel.getChildren().remove(circles.remove(index));
     }
 }
