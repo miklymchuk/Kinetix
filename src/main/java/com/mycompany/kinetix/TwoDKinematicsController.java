@@ -5,6 +5,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import javafx.animation.Animation;
 import javafx.animation.ParallelTransition;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
@@ -57,7 +58,7 @@ public class TwoDKinematicsController implements Initializable {
     
     private double ballVelocity;
     private double angle;
-    private boolean pause = false;
+    private boolean paused = false;
     
     private static final double BALL_RADIUS = 19;
     private static final int MAX_BALLS_IN_SCENE = 3;
@@ -113,16 +114,21 @@ public class TwoDKinematicsController implements Initializable {
 
     @FXML
     private void playBtnPressed(ActionEvent event) {
+        paused = false;
+        
+        for (ParallelTransition animation : animations) {
+            if (animation.getStatus() == Animation.Status.PAUSED) {
+                animation.play();
+            }
+        }
     }
 
     @FXML
     private void pauseBtnPressed(ActionEvent event) {
-        ballsAnimations.pause();
     }
 
     @FXML
     private void resetBtnPressed(ActionEvent event) {
-        ballsAnimations.stop();
     }
     
     /**
