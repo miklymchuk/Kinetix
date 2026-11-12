@@ -184,6 +184,16 @@ public class TwoDKinematicsController implements Initializable {
     }
     
     public void cannonBallMotion(Circle circle) {
+        final double speed = ballVelocity;
+        final double angleRad = Math.toRadians(angle);
+        final double g = MechanicsUtility.GRAVITY_CONSTANT;
+        
+        double groundY = groundLevel.getHeight() > 0 ? groundLevel.getHeight() : groundLevel.getPrefHeight();
+        final double startHeight = Math.max(0, (groundY - BALL_RADIUS - circle.getCenterY()) / PIXELS_PER_METER);
+        
+        double vy = speed * Math.sin(angleRad);
+        final double flightTime = Math.max(vy + , g)
+        
         double startX = circle.getCenterX();
         double startY = circle.getCenterY();
         

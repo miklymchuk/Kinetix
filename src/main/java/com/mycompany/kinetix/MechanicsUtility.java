@@ -77,6 +77,41 @@ public class MechanicsUtility {
         return v * Math.sin(angleRad) * t - 0.5 * GRAVITY_CONSTANT * Math.pow(t, 2);
     }
     
+    /**
+     * calculates the speed in x
+     * @param v the velocity
+     * @param angleRad the angle at which the projectile is launched
+     * @return the speed in x
+     */
+    public static double velocityX(double v, double angleRad) {
+        return v * Math.cos(angleRad);
+    }
+    
+    /**
+     * calculates the speed in y
+     * @param v the velocity
+     * @param angleRad the angle at which the projectile is launched
+     * @return the speed in y
+     */
+    public static double velocityY(double v, double angleRad) {
+        return v * Math.sin(angleRad);
+    }
+    
+    /**
+     * calculates the speed
+     * @param vx the velocity in x
+     * @param vy the velocity in y
+     * @return the speed
+     */
+    public static double speed(double vx, double vy) {
+        return Math.hypot(vx, vy);
+    }
+    
+    public static double flightTime(double v, double angleRad, double startHeight) {
+        double vy = velocityY(v, angleRad);
+        return (vy + Math.sqrt(vy * vy + 2 * GRAVITY_CONSTANT * startHeight)) / GRAVITY_CONSTANT;
+    }
+    
     //Linear momentum
     
     /**
