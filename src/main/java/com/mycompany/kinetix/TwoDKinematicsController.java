@@ -65,11 +65,11 @@ public class TwoDKinematicsController implements Initializable {
     private static final double BALL_RADIUS = 19;
     private static final int MAX_BALLS_IN_SCENE = 3;
     
-    private static final double PIXELS_PER_METER = 4;
+    private static final double PIXELS_PER_METER = 20;
     private static final double MAX_ANGLE = 90;
-    private static final double MAX_VELOCITY = 60;
+    private static final double MAX_VELOCITY = 25;
     private static final double DEFAULT_ANGLE = 45;
-    private static final double DEFAULT_VELOCITY = 30;
+    private static final double DEFAULT_VELOCITY = 15;
     
     private final List<Circle> circles = new ArrayList<>();
     private final List<ParallelTransition> animations = new ArrayList<>();
@@ -87,7 +87,7 @@ public class TwoDKinematicsController implements Initializable {
         
         velocitySlider.setMin(0);
         velocitySlider.setMax(MAX_VELOCITY);
-        velocitySlider.setMajorTickUnit(10);
+        velocitySlider.setMajorTickUnit(5);
         velocitySlider.setValue(DEFAULT_VELOCITY);
         
         angle = angleSlider.getValue();
@@ -173,10 +173,10 @@ public class TwoDKinematicsController implements Initializable {
         double centerY = cannon.getLayoutY() + cannon.getHeight() / 2;
         double halfBarrel = cannon.getHeight() / 2;
         double startX = centerX + halfBarrel * Math.cos(angleRad);
-        double startY = centerY - halfBarrel * Math.cos(angleRad);
+        double startY = centerY - halfBarrel * Math.sin(angleRad);
         
         Circle circle = new Circle(startX, startY, BALL_RADIUS);
-        circle.setFill(Color.DIMGREY);
+        circle.setFill(Color.hsb(Math.random() * 360, 0.8, 0.9));
         circle.setStroke(Color.BLACK);
         circle.setMouseTransparent(true);
         circles.add(circle);
@@ -188,12 +188,10 @@ public class TwoDKinematicsController implements Initializable {
     public void cannonBallMotion(Circle circle) {
         final double speed = ballVelocity;
         final double angleRad = Math.toRadians(angle);
-        final double g = MechanicsUtility.GRAVITY_CONSTANT;
         
         double groundY = groundLevel.getHeight() > 0 ? groundLevel.getHeight() : groundLevel.getPrefHeight();
         final double startHeight = Math.max(0, (groundY - BALL_RADIUS - circle.getCenterY()) / PIXELS_PER_METER);
         
-        double vy = speed * Math.sin(angleRad);
         final double flightTime = Math.max(0.01, MechanicsUtility.flightTime(speed, angleRad, startHeight));
         
         TranslateTransition transX = new TranslateTransition(Duration.seconds(flightTime), circle);
@@ -222,7 +220,7 @@ public class TwoDKinematicsController implements Initializable {
     }
     
     /**
-     * updates the info labels of the latest cannon ball fired aka the height and velocity labels (not the acceleration since it remains constant)
+     * updates the info labels of the latest cannon ball fired aka the height velocity and acceleration labels
      * @param speed the speed of the cannon ball
      * @param angleRad the angle of the cannon
      * @param startHeight the start height
@@ -260,7 +258,7 @@ public class TwoDKinematicsController implements Initializable {
     
     /**
      * removes the ball when the limit of cannon balls in the scene reaches the max
-     * @param index the index of the next cannon ball
+     * @param index the index of the cannon ball being removed
      */
     private void removeBall(int index) {
         ParallelTransition animation = animations.remove(index);
