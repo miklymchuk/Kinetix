@@ -236,6 +236,7 @@ public class TwoDKinematicsController implements Initializable {
         
         height.setText(String.format("Height: %.1f m", Math.max(0, h)));
         velocity.setText(String.format("Velocity: %.1f m/s", MechanicsUtility.speed(vx, vy)));
+        acceleration.setText("Acceleration: 9.8 m/s²");
     }
     
     /**
@@ -252,6 +253,8 @@ public class TwoDKinematicsController implements Initializable {
         animations.clear();
         circles.clear();
         
-        
+        height.setText("Height: ");
+        velocity.setText("Velocity: ");
+        acceleration.setText("Acceleration: ");
     }
 }
