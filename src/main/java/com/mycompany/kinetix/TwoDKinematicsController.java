@@ -19,6 +19,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
@@ -153,16 +154,36 @@ public class TwoDKinematicsController implements Initializable {
         }
     }
     
+    /**
+     * generates a cannon ball when the user clicks the cannon with their mouse
+     */
     public void generateCannonBall() {
-        Circle circle = new Circle();
-        circle.setCenterX(cannon.getLayoutX());
-        circle.setCenterY(cannon.getLayoutY());
-        circle.setRadius(BALL_RADIUS);
+        if (paused) {
+            return;
+        }
+        
+        if (circles.size() >= MAX_BALLS_IN_SCENE) {
+            circles.remove(0);
+        }
+        
+        double angleRad = Math.toRadians(angle);
+        double centerX = cannon.getLayoutX() + cannon.getWidth() / 2;
+        double centerY = cannon.getLayoutY() + cannon.getHeight() / 2;
+        double halfBarrel = cannon.getHeight() / 2;
+        double startX = centerX + halfBarrel * Math.cos(angleRad);
+        double startY = centerY - halfBarrel * Math.cos(angleRad);
+        
+        Circle circle = new Circle(startX, startY, BALL_RADIUS);
+        circle.setFill(Color.DIMGREY);
+        circle.setStroke(Color.BLACK);
+        circle.setMouseTransparent(true);
         circles.add(circle);
-        groundLevel.getChildren().add(circle);
+        groundLevel.getChildren().add(0, circle);
+        
+        cannonBallMotion(circle);
     }
     
-    public void canonBallMotion(Circle circle) {
+    public void cannonBallMotion(Circle circle) {
         double startX = circle.getCenterX();
         double startY = circle.getCenterY();
         
