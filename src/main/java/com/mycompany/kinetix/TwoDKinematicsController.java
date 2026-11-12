@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.animation.Animation;
+import javafx.animation.Interpolator;
 import javafx.animation.ParallelTransition;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
@@ -137,6 +138,7 @@ public class TwoDKinematicsController implements Initializable {
 
     @FXML
     private void resetBtnPressed(ActionEvent event) {
+        resetBalls();
     }
     
     /**
@@ -192,22 +194,35 @@ public class TwoDKinematicsController implements Initializable {
         final double startHeight = Math.max(0, (groundY - BALL_RADIUS - circle.getCenterY()) / PIXELS_PER_METER);
         
         double vy = speed * Math.sin(angleRad);
-        final double flightTime = Math.max(vy + , g)
+        final double flightTime = Math.max(0.01, MechanicsUtility.flightTime(speed, angleRad, startHeight));
         
-        double startX = circle.getCenterX();
-        double startY = circle.getCenterY();
+        TranslateTransition transX = new TranslateTransition(Duration.seconds(flightTime), circle);
+        transX.setByX(MechanicsUtility.projectileX(speed, angleRad, flightTime) * PIXELS_PER_METER);
+        transX.setInterpolator(Interpolator.LINEAR);
         
-        TranslateTransition transX = new TranslateTransition();
-        TranslateTransition transY = new TranslateTransition();
+        TranslateTransition transY = new TranslateTransition(Duration.seconds(flightTime), circle);
+        transY.setByY(-PIXELS_PER_METER);
+        transY.setInterpolator(new Interpolator() {
+            @Override
+            protected double curve(double fraction) {
+                return MechanicsUtility.projectileY(speed, angleRad, fraction * flightTime);
+            }
+        });
         
-        transX.setFromX(startX);
-        transX.setToX(MechanicsUtility.projectileX(ballVelocity, angle, time));
+        ParallelTransition animation = new ParallelTransition(transX, transY);
+        animation.currentTimeProperty().addListener((obs, oldTime, newTime) -> {
+            if (animation == latest) {
+                updateInfoLabels(speed, angleRad, startHeight, newTime.toSeconds());
+            }
+        });
         
-        transY.setFromY(startY);
-        transY.setToY(MechanicsUtility.projectileY(ballVelocity, angle, time));
+        animations.add(animation);
+        latest = animation;
+        animation.play();
+    }
+    
+    private void updateInfoLabels(double speed, double angleRad, double startHeight, double t) {
         
-        transX.setDuration(Duration.seconds(time));
-        transY.setDuration(Duration.seconds(time));
     }
     
     public void resetBalls() {
