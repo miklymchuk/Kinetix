@@ -57,22 +57,43 @@ public class TwoDKinematicsController implements Initializable {
     
     private double ballVelocity;
     private double angle;
-    private double time;
+    private boolean pause = false;
+    
     private static final double BALL_RADIUS = 19;
-    private List<Circle> circles = new ArrayList();
-    private ParallelTransition ballsAnimations;
-    private ParallelTransition ball1Animation;
-    private ParallelTransition ball2Animation;
-    private ParallelTransition ball3Animation;
     private static final int MAX_BALLS_IN_SCENE = 3;
+    
+    private static final double PIXELS_PER_METER = 4;
+    private static final double MAX_ANGLE = 90;
+    private static final double MAX_VELOCITY = 60;
+    private static final double DEFAULT_ANGLE = 45;
+    private static final double DEFAULT_VELOCITY = 30;
+    
+    private final List<Circle> circles = new ArrayList<>();
+    private final List<ParallelTransition> animations = new ArrayList<>();
+    private ParallelTransition latest;
     
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        angleSlider.setMin(0);
+        angleSlider.setMax(MAX_ANGLE);
+        angleSlider.setMajorTickUnit(15);
+        angleSlider.setValue(DEFAULT_ANGLE);
+        
+        velocitySlider.setMin(0);
+        velocitySlider.setMax(MAX_VELOCITY);
+        velocitySlider.setMajorTickUnit(10);
+        velocitySlider.setValue(DEFAULT_VELOCITY);
+        
+        angle = angleSlider.getValue();
+        ballVelocity = velocitySlider.getValue();
+        cannon.setRotate(90 - angle);
+        
         angleSlider.valueProperty().addListener((obs, oldV, newV) -> {
             angle = (double) newV;
+            cannon.setRotate(90 - angle);
         });
         
         velocitySlider.valueProperty().addListener((obs, oldV, newV) -> {
