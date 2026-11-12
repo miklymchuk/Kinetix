@@ -125,6 +125,13 @@ public class TwoDKinematicsController implements Initializable {
 
     @FXML
     private void pauseBtnPressed(ActionEvent event) {
+        paused = true;
+        
+        for (ParallelTransition animation : animations) {
+            if (animation.getStatus() == Animation.Status.RUNNING) {
+                animation.pause();
+            }
+        }
     }
 
     @FXML
