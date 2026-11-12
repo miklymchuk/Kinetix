@@ -31,17 +31,17 @@
                <children>
                   <Label fx:id="height" text="Height: ">
                      <font>
-                        <Font size="52.0" />
+                        <Font size="40.0" />
                      </font>
                   </Label>
                   <Label fx:id="velocity" text="Velocity:">
                      <font>
-                        <Font size="52.0" />
+                        <Font size="40.0" />
                      </font>
                   </Label>
-                  <Label fx:id="acceleration" text="Acceleration:">
+                  <Label fx:id="acceleration" text="Acceleration: 9.8 m/s²">
                      <font>
-                        <Font size="52.0" />
+                        <Font size="40.0" />
                      </font>
                   </Label>
                </children>

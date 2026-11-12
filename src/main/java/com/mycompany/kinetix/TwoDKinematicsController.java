@@ -221,11 +221,37 @@ public class TwoDKinematicsController implements Initializable {
         animation.play();
     }
     
+    /**
+     * updates the info labels of the latest cannon ball fired aka the height and velocity labels (not the acceleration since it remains constant)
+     * @param speed the speed of the cannon ball
+     * @param angleRad the angle of the cannon
+     * @param startHeight the start height
+     * @param t the flight time
+     */
     private void updateInfoLabels(double speed, double angleRad, double startHeight, double t) {
+        double g = MechanicsUtility.GRAVITY_CONSTANT;
+        double vx = MechanicsUtility.velocityX(speed, angleRad);
+        double vy = MechanicsUtility.finalVelocity((MechanicsUtility.velocityY(speed, angleRad)), -g, t);
+        double h = startHeight + MechanicsUtility.projectileY(speed, angleRad, t);
         
+        height.setText(String.format("Height: %.1f m", Math.max(0, h)));
+        velocity.setText(String.format("Velocity: %.1f m/s", MechanicsUtility.speed(vx, vy)));
     }
     
+    /**
+     * resets the animations, cannonballs and the info labels
+     */
     public void resetBalls() {
+        latest = null;
+        paused = false;
+        for (ParallelTransition animation : animations) {
+            animation.stop();
+        }
+        
+        groundLevel.getChildren().removeAll(circles);
+        animations.clear();
+        circles.clear();
+        
         
     }
 }
