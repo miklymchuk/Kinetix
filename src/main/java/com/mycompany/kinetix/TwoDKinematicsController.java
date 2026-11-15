@@ -5,6 +5,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import javafx.animation.Animation;
+import javafx.animation.Interpolator;
 import javafx.animation.ParallelTransition;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
@@ -18,6 +20,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
@@ -57,22 +60,43 @@ public class TwoDKinematicsController implements Initializable {
     
     private double ballVelocity;
     private double angle;
-    private double time;
+    private boolean paused = false;
+    
     private static final double BALL_RADIUS = 19;
-    private List<Circle> circles = new ArrayList();
-    private ParallelTransition ballsAnimations;
-    private ParallelTransition ball1Animation;
-    private ParallelTransition ball2Animation;
-    private ParallelTransition ball3Animation;
     private static final int MAX_BALLS_IN_SCENE = 3;
+    
+    private static final double PIXELS_PER_METER = 20;
+    private static final double MAX_ANGLE = 90;
+    private static final double MAX_VELOCITY = 25;
+    private static final double DEFAULT_ANGLE = 45;
+    private static final double DEFAULT_VELOCITY = 15;
+    
+    private final List<Circle> circles = new ArrayList<>();
+    private final List<ParallelTransition> animations = new ArrayList<>();
+    private ParallelTransition latest;
     
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        angleSlider.setMin(0);
+        angleSlider.setMax(MAX_ANGLE);
+        angleSlider.setMajorTickUnit(15);
+        angleSlider.setValue(DEFAULT_ANGLE);
+        
+        velocitySlider.setMin(0);
+        velocitySlider.setMax(MAX_VELOCITY);
+        velocitySlider.setMajorTickUnit(5);
+        velocitySlider.setValue(DEFAULT_VELOCITY);
+        
+        angle = angleSlider.getValue();
+        ballVelocity = velocitySlider.getValue();
+        cannon.setRotate(90 - angle);
+        
         angleSlider.valueProperty().addListener((obs, oldV, newV) -> {
             angle = (double) newV;
+            cannon.setRotate(90 - angle);
         });
         
         velocitySlider.valueProperty().addListener((obs, oldV, newV) -> {
@@ -92,16 +116,29 @@ public class TwoDKinematicsController implements Initializable {
 
     @FXML
     private void playBtnPressed(ActionEvent event) {
+        paused = false;
+        
+        for (ParallelTransition animation : animations) {
+            if (animation.getStatus() == Animation.Status.PAUSED) {
+                animation.play();
+            }
+        }
     }
 
     @FXML
     private void pauseBtnPressed(ActionEvent event) {
-        ballsAnimations.pause();
+        paused = true;
+        
+        for (ParallelTransition animation : animations) {
+            if (animation.getStatus() == Animation.Status.RUNNING) {
+                animation.pause();
+            }
+        }
     }
 
     @FXML
     private void resetBtnPressed(ActionEvent event) {
-        ballsAnimations.stop();
+        resetBalls();
     }
     
     /**
@@ -119,33 +156,117 @@ public class TwoDKinematicsController implements Initializable {
         }
     }
     
+    /**
+     * generates a cannon ball when the user clicks the cannon with their mouse
+     */
     public void generateCannonBall() {
-        Circle circle = new Circle();
-        circle.setCenterX(cannon.getLayoutX());
-        circle.setCenterY(cannon.getLayoutY());
-        circle.setRadius(BALL_RADIUS);
+        if (paused) {
+            return;
+        }
+        
+        if (circles.size() >= MAX_BALLS_IN_SCENE) {
+            removeBall(0);
+        }
+        
+        double angleRad = Math.toRadians(angle);
+        double centerX = cannon.getLayoutX() + cannon.getWidth() / 2;
+        double centerY = cannon.getLayoutY() + cannon.getHeight() / 2;
+        double halfBarrel = cannon.getHeight() / 2;
+        double startX = centerX + halfBarrel * Math.cos(angleRad);
+        double startY = centerY - halfBarrel * Math.sin(angleRad);
+        
+        Circle circle = new Circle(startX, startY, BALL_RADIUS);
+        circle.setFill(Color.hsb(Math.random() * 360, 0.8, 0.9));
+        circle.setStroke(Color.BLACK);
+        circle.setMouseTransparent(true);
         circles.add(circle);
-        groundLevel.getChildren().add(circle);
+        groundLevel.getChildren().add(0, circle);
+        
+        cannonBallMotion(circle);
     }
     
-    public void canonBallMotion(Circle circle) {
-        double startX = circle.getCenterX();
-        double startY = circle.getCenterY();
+    public void cannonBallMotion(Circle circle) {
+        final double speed = ballVelocity;
+        final double angleRad = Math.toRadians(angle);
         
-        TranslateTransition transX = new TranslateTransition();
-        TranslateTransition transY = new TranslateTransition();
+        double groundY = groundLevel.getHeight() > 0 ? groundLevel.getHeight() : groundLevel.getPrefHeight();
+        final double startHeight = Math.max(0, (groundY - BALL_RADIUS - circle.getCenterY()) / PIXELS_PER_METER);
         
-        transX.setFromX(startX);
-        transX.setToX(MechanicsUtility.projectileX(ballVelocity, angle, time));
+        final double flightTime = Math.max(0.01, MechanicsUtility.flightTime(speed, angleRad, startHeight));
         
-        transY.setFromY(startY);
-        transY.setToY(MechanicsUtility.projectileY(ballVelocity, angle, time));
+        TranslateTransition transX = new TranslateTransition(Duration.seconds(flightTime), circle);
+        transX.setByX(MechanicsUtility.projectileX(speed, angleRad, flightTime) * PIXELS_PER_METER);
+        transX.setInterpolator(Interpolator.LINEAR);
         
-        transX.setDuration(Duration.seconds(time));
-        transY.setDuration(Duration.seconds(time));
+        TranslateTransition transY = new TranslateTransition(Duration.seconds(flightTime), circle);
+        transY.setByY(-PIXELS_PER_METER);
+        transY.setInterpolator(new Interpolator() {
+            @Override
+            protected double curve(double fraction) {
+                return MechanicsUtility.projectileY(speed, angleRad, fraction * flightTime);
+            }
+        });
+        
+        ParallelTransition animation = new ParallelTransition(transX, transY);
+        animation.currentTimeProperty().addListener((obs, oldTime, newTime) -> {
+            if (animation == latest) {
+                updateInfoLabels(speed, angleRad, startHeight, newTime.toSeconds());
+            }
+        });
+        
+        animations.add(animation);
+        latest = animation;
+        animation.play();
     }
     
+    /**
+     * updates the info labels of the latest cannon ball fired aka the height velocity and acceleration labels
+     * @param speed the speed of the cannon ball
+     * @param angleRad the angle of the cannon
+     * @param startHeight the start height
+     * @param t the flight time
+     */
+    private void updateInfoLabels(double speed, double angleRad, double startHeight, double t) {
+        double g = MechanicsUtility.GRAVITY_CONSTANT;
+        double vx = MechanicsUtility.velocityX(speed, angleRad);
+        double vy = MechanicsUtility.finalVelocity((MechanicsUtility.velocityY(speed, angleRad)), -g, t);
+        double h = startHeight + MechanicsUtility.projectileY(speed, angleRad, t);
+        
+        height.setText(String.format("Height: %.1f m", Math.max(0, h)));
+        velocity.setText(String.format("Velocity: %.1f m/s", MechanicsUtility.speed(vx, vy)));
+        acceleration.setText("Acceleration: 9.8 m/s²");
+    }
+    
+    /**
+     * resets the animations, cannonballs and the info labels
+     */
     public void resetBalls() {
+        latest = null;
+        paused = false;
+        for (ParallelTransition animation : animations) {
+            animation.stop();
+        }
         
+        groundLevel.getChildren().removeAll(circles);
+        animations.clear();
+        circles.clear();
+        
+        height.setText("Height: ");
+        velocity.setText("Velocity: ");
+        acceleration.setText("Acceleration: ");
+    }
+    
+    /**
+     * removes the ball when the limit of cannon balls in the scene reaches the max
+     * @param index the index of the cannon ball being removed
+     */
+    private void removeBall(int index) {
+        ParallelTransition animation = animations.remove(index);
+        animation.stop();
+        if (animation == latest) {
+            latest = null;
+        }
+        
+        groundLevel.getChildren().remove(circles.remove(index));
     }
 }
