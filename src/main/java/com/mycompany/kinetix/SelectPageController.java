@@ -27,7 +27,7 @@ public class SelectPageController {
     
     @FXML
     void linMomentumButtonPressed(ActionEvent event) {
-
+        switchScene("linearMomentum.fxml");
     }
 
     @FXML
@@ -42,7 +42,7 @@ public class SelectPageController {
 
     @FXML
     void rotDynamicsButtonPressed(ActionEvent event) {
-
+         switchScene("RotDynamicsAnimation.fxml");
     }
     
     @FXML
