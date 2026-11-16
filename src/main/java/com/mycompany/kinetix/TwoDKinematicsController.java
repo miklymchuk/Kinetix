@@ -115,6 +115,8 @@ public class TwoDKinematicsController implements Initializable {
             Media media = new Media(soundLink.toExternalForm());
             cannonSound = new MediaPlayer(media);
         }
+        
+        cannonRecoil();
     }
 
     @FXML
@@ -292,5 +294,12 @@ public class TwoDKinematicsController implements Initializable {
         }
 
         groundLevel.getChildren().remove(circles.remove(index));
+    }
+    
+    /**
+     * simulates the recoil of the cannon barrel
+     */
+    public void cannonRecoil() {
+        
     }
 }

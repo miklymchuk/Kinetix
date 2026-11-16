@@ -1,0 +1,9 @@
+main-menu {
+    -fx-background-color: #6666ff;
+}
+
+start-button {
+    -fx-background-color: #b077e8;
+    -fx-text-font-weight: bold;
+    -fx-border-radius: 8px;
+}
