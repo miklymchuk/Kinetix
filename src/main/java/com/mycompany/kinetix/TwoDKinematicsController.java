@@ -250,7 +250,14 @@ public class TwoDKinematicsController implements Initializable {
             cannonSound.play();
         }
         
-        animation.setOnFinished(event -> dustOnLandingAnimation(circle.getCenterX() + circle.getTranslateX(), circle.getCenterY() + circle.getTranslateY() + BALL_RADIUS));
+        animation.setOnFinished(event -> {
+            dustOnLandingAnimation(circle.getCenterX() + circle.getTranslateX(), circle.getCenterY() + circle.getTranslateY() + BALL_RADIUS);
+            
+            if (animation == latest) {
+                velocity.setText("Velocity: 0.0 m/s");
+                acceleration.setText("Acceleration: 0.0 m/s²");
+            }
+        });
         
         animations.add(animation);
         latest = animation;
