@@ -6,8 +6,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.animation.Animation;
+import javafx.animation.FadeTransition;
 import javafx.animation.Interpolator;
 import javafx.animation.ParallelTransition;
+import javafx.animation.ScaleTransition;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -82,6 +84,15 @@ public class TwoDKinematicsController implements Initializable {
     private MediaPlayer cannonSound;
     private static final double RECOIL_DISTANCE = 12;
     private TranslateTransition recoilAnimation;
+    
+    private static final int DUST_PARTICLES = 8;
+    private static final double DUST_RADIUS = 4;
+    private static final double DUST_SPREAD = 40;
+    private static final double DUST_RISE = 25;
+    private static final double DUST_MILLIS = 500;
+    
+    private final List<Circle> dustParticles = new ArrayList<>();
+    private final List<ParallelTransition> dustAnimations = new ArrayList<>();
 
     /**
      * Initializes the controller class.
@@ -239,6 +250,8 @@ public class TwoDKinematicsController implements Initializable {
             cannonSound.play();
         }
         
+        animation.setOnFinished(event -> dustOnLandingAnimation(circle.getCenterX() + circle.getTranslateX(), circle.getCenterY() + circle.getTranslateY() + BALL_RADIUS));
+        
         animations.add(animation);
         latest = animation;
         animation.play();
@@ -277,7 +290,15 @@ public class TwoDKinematicsController implements Initializable {
         groundLevel.getChildren().removeAll(circles);
         animations.clear();
         circles.clear();
-
+        
+        for (ParallelTransition dustAnimation : dustAnimations) {
+            dustAnimation.stop();
+        }
+        
+        groundLevel.getChildren().removeAll(dustParticles);
+        dustAnimations.clear();
+        dustParticles.clear();
+        
         height.setText("Height: ");
         velocity.setText("Velocity: ");
         acceleration.setText("Acceleration: ");
@@ -302,7 +323,7 @@ public class TwoDKinematicsController implements Initializable {
     /**
      * simulates the recoil of the cannon barrel
      */
-    public void cannonRecoil() {
+    private void cannonRecoil() {
         if (recoilAnimation != null) {
             recoilAnimation.stop();
         }
@@ -318,5 +339,43 @@ public class TwoDKinematicsController implements Initializable {
         recoilAnimation.setCycleCount(2);
         recoilAnimation.setAutoReverse(true);
         recoilAnimation.play();
+    }
+    
+    /**
+     * adds dust when a cannon ball lands on the floor
+     * @param x the x of the cannon ball
+     * @param y the y of the cannon ball
+     */
+    private void dustOnLandingAnimation(double x, double y) {
+        for (int i = 0; i < DUST_PARTICLES; i++) {
+            double a = Math.PI * (0.08 + 0.84 * i / (DUST_PARTICLES - 1));
+            
+            Circle particle = new Circle(x, y, DUST_RADIUS, Color.DIMGRAY);
+            particle.setMouseTransparent(true);
+            dustParticles.add(particle);
+            groundLevel.getChildren().add(particle);
+            
+            TranslateTransition move = new TranslateTransition(Duration.millis(DUST_MILLIS), particle);
+            move.setByX(Math.cos(a) * DUST_SPREAD);
+            move.setByY(-Math.sin(a) * DUST_RISE);
+            
+            FadeTransition fade = new FadeTransition(Duration.millis(DUST_MILLIS), particle);
+            fade.setFromValue(0.9);
+            fade.setToValue(0);
+            
+            ScaleTransition shrink = new ScaleTransition(Duration.millis(DUST_MILLIS), particle);
+            shrink.setToX(0.3);
+            shrink.setToY(0.3);
+            
+            ParallelTransition dustAnimation = new ParallelTransition(move, fade, shrink);
+            dustAnimation.setOnFinished(event -> {
+                groundLevel.getChildren().remove(particle);
+                dustParticles.remove(particle);
+                dustAnimations.remove(dustAnimation);
+            });
+            
+            dustAnimations.add(dustAnimation);
+            dustAnimation.play();
+        }
     }
 }
