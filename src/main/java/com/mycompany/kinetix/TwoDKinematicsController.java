@@ -93,6 +93,9 @@ public class TwoDKinematicsController implements Initializable {
     
     private final List<Circle> dustParticles = new ArrayList<>();
     private final List<ParallelTransition> dustAnimations = new ArrayList<>();
+    
+    private static final long COOLDOWN_MILLIS = 500;
+    private long lastFireTime = 0;
 
     /**
      * Initializes the controller class.
@@ -192,6 +195,12 @@ public class TwoDKinematicsController implements Initializable {
         if (paused) {
             return;
         }
+        
+        long now = System.currentTimeMillis();
+        if (now - lastFireTime < COOLDOWN_MILLIS) {
+            return;
+        }
+        lastFireTime = now;
 
         if (circles.size() >= MAX_BALLS_IN_SCENE) {
             removeBall(0);
@@ -288,6 +297,7 @@ public class TwoDKinematicsController implements Initializable {
      * resets the animations, cannonballs and the info labels
      */
     public void resetBalls() {
+        lastFireTime = 0;
         latest = null;
         paused = false;
         for (ParallelTransition animation : animations) {
@@ -340,7 +350,7 @@ public class TwoDKinematicsController implements Initializable {
         
         double angleRad = Math.toRadians(angle);
         
-        recoilAnimation = new TranslateTransition(Duration.millis(800), cannon);
+        recoilAnimation = new TranslateTransition(Duration.millis(400), cannon);
         recoilAnimation.setByX(-RECOIL_DISTANCE * Math.cos(angleRad));
         recoilAnimation.setByY(RECOIL_DISTANCE * Math.sin(angleRad));
         recoilAnimation.setCycleCount(2);
