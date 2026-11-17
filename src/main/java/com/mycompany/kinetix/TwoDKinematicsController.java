@@ -80,6 +80,8 @@ public class TwoDKinematicsController implements Initializable {
     private ParallelTransition latest;
     
     private MediaPlayer cannonSound;
+    private static final double RECOIL_DISTANCE = 12;
+    private TranslateTransition recoilAnimation;
 
     /**
      * Initializes the controller class.
@@ -199,6 +201,7 @@ public class TwoDKinematicsController implements Initializable {
         groundLevel.getChildren().add(0, circle);
 
         cannonBallMotion(circle);
+        cannonRecoil();
     }
 
     public void cannonBallMotion(Circle circle) {
@@ -300,6 +303,20 @@ public class TwoDKinematicsController implements Initializable {
      * simulates the recoil of the cannon barrel
      */
     public void cannonRecoil() {
+        if (recoilAnimation != null) {
+            recoilAnimation.stop();
+        }
         
+        cannon.setTranslateX(0);
+        cannon.setTranslateY(0);
+        
+        double angleRad = Math.toRadians(angle);
+        
+        recoilAnimation = new TranslateTransition(Duration.millis(800), cannon);
+        recoilAnimation.setByX(-RECOIL_DISTANCE * Math.cos(angleRad));
+        recoilAnimation.setByY(RECOIL_DISTANCE * Math.sin(angleRad));
+        recoilAnimation.setCycleCount(2);
+        recoilAnimation.setAutoReverse(true);
+        recoilAnimation.play();
     }
 }
