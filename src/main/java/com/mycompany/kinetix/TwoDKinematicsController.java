@@ -94,7 +94,7 @@ public class TwoDKinematicsController implements Initializable {
     private final List<Circle> dustParticles = new ArrayList<>();
     private final List<ParallelTransition> dustAnimations = new ArrayList<>();
     
-    private static final long COOLDOWN_MILLIS = 500;
+    private static final long COOLDOWN_MILLIS = 800;
     private long lastFireTime = 0;
 
     /**
