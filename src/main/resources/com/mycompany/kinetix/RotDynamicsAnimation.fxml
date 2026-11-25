@@ -47,7 +47,7 @@
                   <Group />
                </children>
             </Pane>
-            <StackPane layoutX="511.0" layoutY="237.0">
+            <StackPane fx:id="wheel" layoutX="511.0" layoutY="237.0">
                <children>
                   <Circle radius="152.0" stroke="#595959" strokeType="INSIDE" strokeWidth="8.0">
                      <fill>
@@ -98,19 +98,19 @@
                   <Insets />
                </VBox.margin>
             </Label>
-            <Slider max="90.0" minorTickCount="5" />
+            <Slider fx:id="angleSlider" max="90.0" minorTickCount="5" />
             <Label alignment="CENTER" contentDisplay="CENTER" text="Force F (N)" textAlignment="CENTER">
                <font>
                   <Font size="24.0" />
                </font>
             </Label>
-            <Slider max="90.0" minorTickCount="5" />
+            <Slider fx:id="forceSlider" max="90.0" minorTickCount="5" />
             <Label alignment="CENTER" contentDisplay="CENTER" text="Disk radius (m)" textAlignment="CENTER">
                <font>
                   <Font size="24.0" />
                </font>
             </Label>
-            <Slider max="90.0" minorTickCount="5" />
+            <Slider fx:id="radiusSlider" majorTickUnit="0.1" max="0.8" min="0.2" minorTickCount="5" showTickMarks="true" value="0.5" />
             <HBox alignment="CENTER" prefHeight="42.0" prefWidth="140.0" spacing="45.0">
                <children>
                   <Button fx:id="pullBtn" alignment="CENTER" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#pullBtnPressed" prefHeight="130.0" prefWidth="160.0" text="Pull">
@@ -152,7 +152,7 @@
                </font>
             </Label>
             <Label fx:id="calculatedTorqueLabel" alignment="CENTER" prefHeight="18.0" prefWidth="57.0" GridPane.columnIndex="1" />
-            <Label alignment="CENTER" prefHeight="18.0" prefWidth="57.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <Label fx:id="momentOfInertiaLabel" alignment="CENTER" prefHeight="18.0" prefWidth="57.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
          </children>
       </GridPane>
    </children>

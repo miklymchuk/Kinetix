@@ -15,6 +15,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
+import javafx.scene.control.Slider;
+import javafx.scene.layout.StackPane;
 
 /**
  * FXML Controller class
@@ -23,22 +25,54 @@ import javafx.stage.Stage;
  */
 public class RotDynamicsAnimationController implements Initializable {
 
-    @FXML
-    private Button returnBtn;
-    @FXML
-    private Label calculatedTorqueLabel;
-    @FXML
-    private Button pullBtn;
-    @FXML
-    private Button resetBtn;
+    @FXML private Button returnBtn;
+    @FXML private Label calculatedTorqueLabel;
+    @FXML private Button pullBtn;
+    @FXML private Button resetBtn;
+    @FXML private StackPane wheel;
+    @FXML private Slider radiusSlider;
+    @FXML private Slider forceSlider;
+    @FXML private Slider angleSlider;
+    @FXML private Label momentOfInertiaLabel;
 
-    /**
-     * Initializes the controller class.
-     */
+    // The wheel as drawn in the FXML corresponds to this radius in meters.
+    private static final double BASE_RADIUS_M = 0.5;
+    private static final double DISK_MASS_KG = 2.0; // placeholder, change as needed
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
-    }    
+        radiusSlider.valueProperty().addListener((obs, oldVal, newVal) -> {
+            applyRadius(newVal.doubleValue());
+            updateReadouts();
+        });
+
+        // The force and angle sliders also affect torque, so refresh on those too
+        forceSlider.valueProperty().addListener((obs, o, n) -> updateReadouts());
+        angleSlider.valueProperty().addListener((obs, o, n) -> updateReadouts());
+
+        // Set the initial state
+        applyRadius(radiusSlider.getValue());
+        updateReadouts();
+    }
+    
+    /** Resizes the wheel visually. Scaling happens around the node's center. */
+    private void applyRadius(double radiusMeters) {
+        double scale = radiusMeters / BASE_RADIUS_M;
+        wheel.setScaleX(scale);
+        wheel.setScaleY(scale);
+    }
+    
+    private void updateReadouts() {
+        double r = radiusSlider.getValue();
+        double force = forceSlider.getValue();
+        double thetaRad = Math.toRadians(angleSlider.getValue());
+
+        double inertia = 0.5 * DISK_MASS_KG * r * r;   // solid disk: I = ½mr²
+        double torque = force * r * Math.sin(thetaRad); // τ = rF·sinθ
+
+        calculatedTorqueLabel.setText(String.format("%.2f", torque));
+        momentOfInertiaLabel.setText(String.format("%.3f", inertia));
+    }
 
     @FXML
     private void returnBtnPressed(ActionEvent event) {
