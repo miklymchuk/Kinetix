@@ -29,17 +29,17 @@
          <children>
             <Pane>
                <children>
-                  <Line endX="508.0" endY="382.0" startX="508.0" startY="775.0" stroke="#a67c52" strokeLineCap="ROUND" strokeWidth="10.0" style="-fx-stroke-dash-array: 7;">
+                  <Line fx:id="ropeLeft" endX="508.0" endY="382.0" startX="508.0" startY="775.0" stroke="#a67c52" strokeLineCap="ROUND" strokeWidth="10.0" style="-fx-stroke-dash-array: 7;">
                      <effect>
                         <InnerShadow />
                      </effect>
                   </Line>
-                  <Line endX="818.0" endY="382.0" startX="818.0" startY="775.0" stroke="#a67c52" strokeLineCap="ROUND" strokeWidth="10.0" style="-fx-stroke-dash-array: 7;">
+                  <Line fx:id="ropeRight" endX="818.0" endY="382.0" startX="818.0" startY="775.0" stroke="#a67c52" strokeLineCap="ROUND" strokeWidth="10.0" style="-fx-stroke-dash-array: 7;">
                      <effect>
                         <InnerShadow />
                      </effect>
                   </Line>
-                  <Arc centerX="663.0" centerY="386.0" fill="TRANSPARENT" length="180.0" radiusX="160.0" radiusY="160.0" stroke="#a67c52" strokeLineCap="ROUND" strokeType="INSIDE" strokeWidth="10.0" style="-fx-stroke-dash-array: 15;">
+                  <Arc fx:id="ropeArc" centerX="663.0" centerY="386.0" fill="TRANSPARENT" length="180.0" radiusX="160.0" radiusY="160.0" stroke="#a67c52" strokeLineCap="ROUND" strokeWidth="10.0" style="-fx-stroke-dash-array: 8;">
                      <effect>
                         <InnerShadow />
                      </effect>
@@ -98,7 +98,7 @@
                   <Insets />
                </VBox.margin>
             </Label>
-            <Slider fx:id="angleSlider" max="90.0" minorTickCount="5" />
+            <Slider fx:id="angleSlider" max="90.0" minorTickCount="5" value="90.0" />
             <Label alignment="CENTER" contentDisplay="CENTER" text="Force F (N)" textAlignment="CENTER">
                <font>
                   <Font size="24.0" />
