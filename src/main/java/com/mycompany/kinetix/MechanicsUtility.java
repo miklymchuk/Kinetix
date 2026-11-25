@@ -43,6 +43,11 @@ public class MechanicsUtility {
         return t;
     }
     
+    public static double timeFromVelocity(double x, double v) {
+        double t = x/v;
+        return t;
+    }
+    
     /**
      * calculates the final velocity of the object
      * @param v the initial velocity

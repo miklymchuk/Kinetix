@@ -14,7 +14,7 @@
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="780.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.kinetix.LinearMomentumController">
+<BorderPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="780.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/27.0.1.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.kinetix.LinearMomentumController">
    <center>
       <Pane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
@@ -112,17 +112,17 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Button fx:id="startBtn" mnemonicParsing="false" prefWidth="150.0" text="Start">
+                  <Button fx:id="startBtn" mnemonicParsing="false" onAction="#startBtnPressed" prefWidth="150.0" text="Start">
                      <font>
                         <Font size="24.0" />
                      </font>
                   </Button>
-                  <Button fx:id="resetBtn" mnemonicParsing="false" prefWidth="150.0" text="Reset" GridPane.columnIndex="1">
+                  <Button fx:id="resetBtn" mnemonicParsing="false" onAction="#resetBtnPressed" prefWidth="150.0" text="Reset" GridPane.columnIndex="1">
                      <font>
                         <Font size="24.0" />
                      </font>
                   </Button>
-                  <Button fx:id="pauseBtn" mnemonicParsing="false" prefWidth="150.0" text="Pause" GridPane.rowIndex="1">
+                  <Button fx:id="pauseBtn" mnemonicParsing="false" onAction="#pauseBtnPressed" prefWidth="150.0" text="Pause" GridPane.rowIndex="1">
                      <font>
                         <Font size="24.0" />
                      </font>
