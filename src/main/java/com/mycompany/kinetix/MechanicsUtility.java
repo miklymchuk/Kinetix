@@ -27,6 +27,16 @@ public class MechanicsUtility {
     //1D Kinematics
     
     /**
+     * calculates the final position of an object with a constant velocity
+     * @param v the velocity
+     * @param a the time
+     * @return the time
+     */
+    public static double finalPosition(double v, double t) {
+        return v * t;
+    }
+    
+    /**
      * calculates the final position of the object
      * @param x the initial position
      * @param v the initial velocity
@@ -38,8 +48,25 @@ public class MechanicsUtility {
         return x + v * t + 0.5 * a * Math.pow(t, 2);
     }
     
+    /**
+     * calculates the time of the object when given the displacement and acceleration
+     * @param x the displacement
+     * @param a the acceleration
+     * @return the time
+     */
     public static double time(double x, double a) {
         double t = Math.sqrt(2 * x / a);
+        return t;
+    }
+    
+    /**
+     * calculates the time of the object when given the displacement and velocity
+     * @param x the displacement
+     * @param v the velocity
+     * @return the time
+     */
+    public static double timeFromVelocity(double x, double v) {
+        double t = x/v;
         return t;
     }
     
@@ -53,7 +80,6 @@ public class MechanicsUtility {
     public static double finalVelocity(double v, double a, double t) {
         return v + a * t; 
     }
-    
     
     //2D Kinematics
     
@@ -124,6 +150,19 @@ public class MechanicsUtility {
      */
     public static double momentum(double mass, double velocity) {
         return mass * velocity;
+    }
+    
+    /**
+     * calculates the final velocity of the first object in a collision
+     * @param ma the mass of the first object
+     * @param va the initial velocity of the first object
+     * @param mb the mass of the second object
+     * @param vb the initial velocity of the second object
+     * @param lb the momentum of the second object
+     * @return the final velocity of the first object
+     */
+    public static double finalVelocity(double ma, double va, double mb, double vb, double lb) {       
+        return (((ma - mb) * va) + (2 * lb)) / (ma + mb);
     }
     
     //Rotational Dynamics
